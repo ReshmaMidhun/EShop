@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eshop</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <!--Box Icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!--Box Icons-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+<section id="header">
+        <a href="index.html"> <img src="img/logo_1.png" class="logo"></a>
+
+        <ul id="profile">
+                   <li id="loginBtn"><a href="login.html"><i class="fa-solid fa-user"></i></a></li>
+                   <li class="dropdown" id="user"><h5>Hello<span id="username"></span></h5>
+                        <ul class="dropdown-content">
+                            <li>Profile</li>
+                            <li><button id="logoutBtn">Log out</button></li>
+                        </ul></li>
+        </ul>
+        <div>
+            <ul id="navbar">                
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a class="active" href="Contact.html">Contact</a></li>
+                
+                <li><a href="cart.html"><i class="fa-solid fa-cart-shopping" id="cart-icon" data-quantity="0"></i></a></li>
+                <a href="#" id="close"><i class="far fa-times close-btn"></i></a>   
+            </ul>
+        </div>
+        <div id="mobile">
+            <!--<a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>-->
+            <i id="bar" class="fas fa-outdent" style="cursor: pointer;"></i>
+      
+        </div>
+    </section>
+
+    <section id="page-header" class="contact-header section-m1 section-p1">
+        <h2>#Let's_talk</h2>
+        <p>Lorem ipsum dolorctetur adipisicing eeiciendis asper</p>
+    </section>
+
+    <section id="contact-section">
+        <div class="details">
+            <h2>Contact Information</h2>
+            <p>For more details, get in touch with us.</p>
+            <div>
+                 <li>
+                    <i class="far fa-envelope"></i>
+                    <p>contact@example.com</p>
+                </li>
+                <li><i class="fas fa-phone-alt"></i>
+                    <p>0487259632</p>
+                <li>
+                    <i class="far fa-clock"></i>
+                    <p>Monday to Saturday: 9 am to 6pm</p>
+                </li>
+            </li>
+            </div>
+
+        </div>
+
+        <div class="gmap">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7220.343022625657!2d55.274348042152894!3d25.19743791084293!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f682829c85c07%3A0xa5eda9fb3c93b69d!2sDubai%20Mall!5e0!3m2!1sen!2sae!4v1754303126745!5m2!1sen!2sae" width="500" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </section>
+
+    <section id="social-icons">
+        
+             <i class="fab fa-facebook-f"></i>
+             <i class="fab fa-twitter"></i>
+             <i class="fab fa-instagram"></i>
+             <i class="fab fa-youtube"></i>
+                
+    </section>
+
+    <section id="form-details">
+        <form action="" id="contactForm">
+            <h2>Get in Touch with Us</h2>
+            <input type="text" name="name" id="name" placeholder="Your Name" required>
+            <input type="text" name="email" id="email" placeholder="E-mail" required>
+            <input type="text" name="subject" id="subject" placeholder="Subject" required>
+            <textarea id="message" cols="5" rows="5" name="message" placeholder="Your message" required></textarea>
+            <button type="submit" class="normal">Submit</button>
+            <div id="msg" style="visibility: hidden; color: green; margin-top: 10px;"></div>
+        </form>
+    </section>
+
+          <section id="newsletter" class="section-p1 section-m1">
+        <div class="newstext">
+            <h4>Sign Up for Newsletters</h4>
+            <p>Get Email updates about our latest shop and <span>special offers</span>
+            </p>
+        </div>
+        <div class="form">
+            <input type="text" placeholder="Your Email address">
+            <button class="normal">Sign Up</button>
+        </div>
+
+    </section>
+
+    <footer class="section-p1">
+        <div class="col">
+            <img src="img/logo_1.png" class="logo" alt="">
+            <h4>Contact</h4>
+            <p><strong>Phone :</strong>04986325</p>
+            <p><strong>Hours:</strong>9:00 - 6:00, Mon - Fri</p>
+            <div class="follow">
+                <h4>Follow Us</h4>
+                <div class="icon" id="social-icons">
+                    <i class="fab fa-facebook-f"></i>
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-youtube"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <h4>About</h4>
+            <a href="about.html">About Us</a>
+            <a href="">Privacy Policy</a>
+            <a href="">Terms & Conditions</a>
+            <a href="contact.html">Contact Us</a>
+        </div>
+
+        <div class="col">
+            <h4>My Account</h4>
+            <a href="login.html">Sign In</a>
+            <a href="cart.html">View Cart</a>
+            <a href="">Help</a>
+            
+        </div>
+
+        <div class="copyright">
+            <p>@2025, reshmamidhun  </p>
+
+        </div>
+    </footer>
+
+    <script src="JS/main.js"></script>
+    <script src="JS/common.js"></script>
+    <script>
+
+        document.getElementById("contactForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const subject = document.getElementById("subject").value;
+            const message = document.getElementById("message").value;
+            console.log(name+"name");
+
+            fetch("/submitContact", {
+                method: "POST",
+                headers: { "Content-Type" : "application/json" },
+                body: JSON.stringify({ name, email, subject,message })
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data.message);
+                document.getElementById("contactForm").reset();
+                const msgDiv = document.getElementById("msg");
+                msgDiv.innerText = "Message Sent Successfully";
+                msgDiv.style.visibility = "visible";
+
+                setTimeout(() => {
+                    msgDiv.style.visibility = "hidden"; // hide after 5 seconds
+                }, 5000);
+
+            })
+            .catch(err => {
+                console.error(err);
+
+            });
+        });
+    </script>
+    </body>
+</html>

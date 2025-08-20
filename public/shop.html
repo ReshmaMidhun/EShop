@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eshop</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <!--Box Icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!--Box Icons-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+     <section id="header">
+        <a href="index.html"> <img src="img/logo_1.png" class="logo"></a>
+
+        <ul id="profile">
+                   <li id="loginBtn"><a href="login.html"><i class="fa-solid fa-user"></i></a></li>
+                   <li class="dropdown" id="user"><h5>Hello<span id="username"></span></h5>
+                        <ul class="dropdown-content">
+                            <li>Profile</li>
+                            <li><button id="logoutBtn">Log out</button></li>
+                        </ul></li>
+        </ul>
+        <div>
+            <ul id="navbar">                
+                <li><a href="index.html">Home</a></li>
+                <li><a class="active" href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="Contact.html">Contact</a></li>
+                
+               <li><a href="cart.html"><i class="fa-solid fa-cart-shopping" id="cart-icon" data-quantity="0"></i></a></li>
+                <a href="#" id="close"><i class="far fa-times close-btn"></i></a>   
+            </ul>
+        </div>
+        <div id="mobile">
+            <!--<a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>-->
+            <i id="bar" class="fas fa-outdent" style="cursor: pointer;"></i>
+      
+        </div>
+    </section>
+
+    <section id="shop-category">
+        <ul id="category-navbar">
+            
+                <li><a href="#" data-category-id="1">All</a></li>
+                <li class="dropdown"><a href="#" data-category-id="2">Men</a>
+                    <ul class="dropdown-content">
+                        <li><a href="#" data-category-id="2" data-subcategory-id="1">T-shirt</a></li>
+                        <li><a href="#" data-category-id="2" data-subcategory-id="2">Jeans</a></li>
+                    </ul>
+               </li>
+                <li class="dropdown"><a href="#" data-category-id="3">Women</a>
+                    <ul class="dropdown-content">
+                        <li><a href="#" data-category-id="3" data-subcategory-id="1">T-Shirt</a></li>
+                        <li><a href="#" data-category-id="3" data-subcategory-id="2">Kurtas</a></li>
+                        <li><a href="#" data-category-id="3" data-subcategory-id="3">Jeans</a></li>
+                    </ul>
+                </li>
+                <li  class="dropdown"><a href="#" data-category-id="4">Kids</a>
+                    <ul class="dropdown-content">
+                        <li><a href="#" data-category-id="4" data-subcategory-id="1">Boys's Shirts</a></li>
+                        <li><a href="#" data-category-id="4" data-subcategory-id="2">Boys's Jeans</a></li>
+                        <li><a href="#" data-category-id="4" data-subcategory-id="3">Girl's Frock</a></li>
+                        <li><a href="#" data-category-id="4" data-subcategory-id="4">Girl's T-shirt</a></li>
+                    </ul>
+                </li>
+            </ul>
+        
+    </section>
+
+    <section id="shop-filters">
+        <div class="price-filter">
+            <label for="priceRange">Max Price: $<span id="priceValue">200</span></label>
+            <input type="range" id="priceRange" min="10" max="1000" value="100">
+        </div>
+        <div class="sort-filter">
+            <label for="sort">Sort by:</label>
+            <select id="sort">
+                <option value="default">Default</option>
+                <option value="low-to-high">Price: Low to High</option>
+                <option value="high-to-low">Price: High to Low</option>
+                
+            </select>
+        </div>
+    </section> 
+  
+    
+    <section id="product-section"  class="section-p1">
+        <h2><h2>Keep Shopping</h2></h2>
+        <p>Summer Collection New Modern Design</p>
+        <div class="product-container">
+            
+            
+            
+
+          
+
+        </div>
+    </section>
+
+
+
+    <section id="newsletter" class="section-p1 section-m1">
+        <div class="newstext">
+            <h4>Sign Up for Newsletters</h4>
+            <p>Get Email updates about our latest shop and <span>special offers</span>
+            </p>
+        </div>
+        <div class="form">
+            <input type="text" placeholder="Your Email address">
+            <button class="normal">Sign Up</button>
+        </div>
+
+    </section>
+
+    <footer class="section-p1">
+        <div class="col">
+            <img src="img/logo_1.png" class="logo" alt="">
+            <h4>Contact</h4>
+            <p><strong>Phone :</strong>04986325</p>
+            <p><strong>Hours:</strong>9:00 - 6:00, Mon - Fri</p>
+            <div class="follow">
+                <h4>Follow Us</h4>
+                <div class="icon" id="social-icons">
+                    <i class="fab fa-facebook-f"></i>
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-youtube"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <h4>About</h4>
+            <a href="about.html">About Us</a>
+            <a href="">Privacy Policy</a>
+            <a href="">Terms & Conditions</a>
+            <a href="contact.html">Contact Us</a>
+        </div>
+
+        <div class="col">
+            <h4>My Account</h4>
+            <a href="login.html">Sign In</a>
+            <a href="cart.html">View Cart</a>
+            <a href="">Help</a>
+            
+        </div>
+
+        <div class="copyright">
+            <p>@2025, reshmamidhun  </p>
+
+        </div>
+    </footer>
+
+    
+    <script>
+        if(document.readyState == "loading") {
+            document.addEventListener("DOMContentLoaded", ready);
+        }
+        else {
+            ready();
+        }
+
+        function ready() {
+            console.log("ready() function called");
+            const container = document.querySelector(".product-container");
+
+            let categoryId = 1;       // Default = All categories
+            let subCategoryId = null; // No subcategory selected initially
+            const sortSelect = document.getElementById("sort");
+
+            const priceRange = document.getElementById("priceRange");
+            const priceValue = document.getElementById("priceValue");
+            let currentMaxPrice = 500;
+          
+
+          
+                                
+
+                                // Initial fetch
+                                  fetchProducts(categoryId, subCategoryId);
+                                const categoryLinks = document.querySelectorAll("#category-navbar a");
+                                categoryLinks.forEach(link => {
+                                    link.addEventListener("click", (e) => {
+                                        e.preventDefault();
+                                        console.log("category object ");
+                                        console.log(e);
+                                        categoryId = e.currentTarget.dataset.categoryId;
+                                         console.log("categoryId "+categoryId);
+                                        subCategoryId = e.currentTarget.dataset.subcategoryId ||null;
+                                        console.log("subCategoryId "+subCategoryId);
+                                        fetchProducts(categoryId, subCategoryId);
+                                        });
+                                });
+                                        // Filter
+                                         priceRange.addEventListener("input", () => {
+                                            currentMaxPrice = priceRange.value;      // Update the current price
+                                            priceValue.textContent = currentMaxPrice; // Update the label
+                                            fetchProducts(categoryId, subCategoryId); // Refetch products with new price
+                                        });
+                                           // Sort dropdown
+                                        sortSelect.addEventListener("change", () => {
+                                            
+                                             console.log("sort object ");
+                                            //console.log(e);
+                                             console.log("categoryId "+categoryId);
+                                               console.log("subCategoryId "+subCategoryId);
+                                             fetchProducts(categoryId, subCategoryId);
+                                        });
+                                         
+                                    
+
+                                
+                                function fetchProducts(categoryId, subCategoryId) {
+                                    const params = [`categoryId=${categoryId}`, `sort=${sortSelect.value}`, `maxPrice=${currentMaxPrice}`];
+                                    if (subCategoryId) params.push(`subCategoryId=${subCategoryId}`);
+
+                                    const url = `/getProducts?${params.join('&')}`;
+                                    console.log("Fetching URL:", url);
+
+                                    fetch(url)
+                                        .then(res => res.json())
+                                        .then(products =>{
+                                            console.log(products);
+                                         displayProducts(products)
+                                }       )
+                                        .catch(err => console.error(err));
+                                }
+
+
+                                    function displayProducts(products) {
+                                         const container = document.querySelector(".product-container");
+                                        container.innerHTML = "";
+                                        if (products.length === 0) {
+                                            container.innerHTML = "<p>No products found.</p>";
+                                            return;
+                                        }
+                                        products.forEach(product => {
+                                            const box = document.createElement('div');
+                                            box.classList.add("product");
+                                            console.log("2");
+                                            box.innerHTML = `
+                                                            <img src="${product.image_url}" alt="" class="product-img"/>
+                                                            <div class="description"> </div>
+                                                            <div class="product-title">${product.name}</div>
+                                                            <div class="price">${product.price}</div>
+                                                            <i class="bx bx-shopping-bag add-cart" data-id="${product.id}"></i>
+                                                            `;                                
+                                                            container.appendChild(box);
+
+                                                            box.addEventListener("click", (e) => {
+                                                            window.location.href = `sproduct.html?id=${product.id}`;
+                                                            });
+                                                        });         
+                                                    }                 
+                            
+                                
+                            }
+                                     
+    </script>
+    <script src="JS/main.js"></script>
+    <script src="JS/common.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

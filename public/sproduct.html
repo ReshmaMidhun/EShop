@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eshop</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <!--Box Icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!--Box Icons-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <section id="header">
+        <a href="index.html"> <img src="img/logo_1.png" class="logo"></a>
+
+        <ul id="profile">
+                   <li id="loginBtn"><a href="login.html"><i class="fa-solid fa-user"></i></a></li>
+                   <li class="dropdown" id="user"><h5>Hello<span id="username"></span></h5>
+                        <ul class="dropdown-content">
+                            <li>Profile</li>
+                            <li><button id="logoutBtn">Log out</button></li>
+                        </ul></li>
+        </ul>
+        <div>
+            <ul id="navbar">                
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="Contact.html">Contact</a></li>
+                
+                <li><a href="cart.html"><i class="fa-solid fa-cart-shopping" id="cart-icon" data-quantity="0"></i></a></li>
+                <a href="#" id="close"><i class="far fa-times close-btn"></i></a>   
+            </ul>
+        </div>
+        <div id="mobile">
+            <!--<a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>-->
+            <i id="bar" class="fas fa-outdent" style="cursor: pointer;"></i>
+      
+        </div>
+    </section>
+
+    <section id="pro-details" class="section-p1">
+        <div class="single-pro-image">
+            <img src="" alt="" width="100%" id="main-img">
+            
+            
+            <div class="small-img-group" id="thumbnail-group">
+               
+
+            </div>
+        </div>
+        <div class="single-pro-details">
+            <h6 id="product-category">Home/ T-Shirt</h6>
+            <h4 id="product-title">Mens Fashion T-shirt</h4>
+            <h2 id="product-price">$69.00</h2>
+            <h6 id="size">Size: </h6>
+            <input type="hidden" value="S" name="size" id="selected-size">
+            <div class="size-buttons">
+                <button type="button" data-size="S"></button>
+              
+            </div>
+
+
+            <input type="number" value="1" style="display: none;">
+            <p id="stock-info" style="font-size: 14px; color: green; margin-bottom: 10px;" ></p>
+            <button class="normal" id="cartBtn">Add To Cart</button>
+            <h4>Product details</h4>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem saepe fuga, voluptas maxime hic quasi deserunt eaque, inventore, voluptatibus perspiciatis amet eius sed sunt dolores. Obcaecati deserunt cumque sit eum?</p>
+
+        </div>
+    </section>
+
+
+    <section id="product-section"  class="section-p1">
+        <h2>Featured Products</h2>
+        <p>Summer Collection New Modern Design</p>
+        <div class="product-container">
+            <div class="product">
+                <img src="img/p_img1.png" alt="" class="product-img"/>
+                <div class="description"> </div>
+                <div class="product-title">Womens Floral Top</div>
+                <div class="price">$50</div>
+                <i class="bx bx-shopping-bag add-cart"></i>
+                
+            </div>
+
+            <div class="product">
+                <img src="img/p_img1.png" alt="" class="product-img"/>
+                <div class="description"> </div>
+                <div class="product-title">Womens Floral Top</div>
+                <div class="price">$50</div>
+                <i class="bx bx-shopping-bag add-cart"></i>
+                
+            </div>
+
+            <div class="product">
+                <img src="img/p_img1.png" alt="" class="product-img"/>
+                <div class="description"> </div>
+                <div class="product-title">Womens Floral Top</div>
+                <div class="price">$50</div>
+                <i class="bx bx-shopping-bag add-cart"></i>
+                
+            </div>
+
+            <div class="product">
+                <img src="img/p_img1.png" alt="" class="product-img"/>
+                <div class="description"> </div>
+                <div class="product-title">Womens Floral Top</div>
+                <div class="price">$50</div>
+                <i class="bx bx-shopping-bag add-cart" ></i>
+                
+            </div>
+
+
+        </div>
+    </section>
+  
+    
+   
+    
+
+    <section id="newsletter" class="section-p1 section-m1">
+        <div class="newstext">
+            <h4>Sign Up for Newsletters</h4>
+            <p>Get Email updates about our latest shop and <span>special offers</span>
+            </p>
+        </div>
+        <div class="form">
+            <input type="text" placeholder="Your Email address">
+            <button class="normal">Sign Up</button>
+        </div>
+
+    </section>
+
+    <footer class="section-p1">
+        <div class="col">
+            <img src="img/logo.png" class="logo" alt="">
+            <h4>Contact</h4>
+            <p><strong>Phone :</strong>04986325</p>
+            <p><strong>Hours:</strong>9:00 - 6:00, Mon - Fri</p>
+            <div class="follow">
+                <h4>Follow</h4>
+                <div class="icon">
+                    <i class="fab fa-facebook-f"></i>
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-youtube"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <h4>About</h4>
+            <a href="">About Us</a>
+            <a href="">Privacy Policy</a>
+            <a href="">Terms & Conditions</a>
+            <a href="">Contact Us</a>
+        </div>
+
+        <div class="col">
+            <h4>My Account</h4>
+            <a href="">Sign In</a>
+            <a href="">View Cart</a>
+            <a href="">Help</a>
+            <a href="">Contact Us</a>
+        </div>
+
+        <div class="copyright">
+            <p>@2025, reshmamidhun  </p>
+
+        </div>
+    </footer>
+
+    
+    
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            /*document.querySelectorAll('.size-buttons button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.getElementById('selected-size').value = btn.dataset.size;
+                    document.getElementById("size").innerHTML = "Size:  " + document.getElementById('selected-size').value;
+                });
+            });*/ 
+            const params = new URLSearchParams(window.location.search);
+            const mainImg = document.getElementById("main-img");
+            const productId = params.get("id");
+            fetch(`/product_sizes/${productId}`)
+            .then(res => res.json())
+            .then(sizes => {
+                console.log(sizes);
+                const container = document.querySelector(".size-buttons");
+                container.innerHTML = "";
+                const stockInfo = document.getElementById("stock-info");//Stock info
+
+                sizes.forEach((row, index) => {
+                    const size = row.size; 
+                    console.log(size);
+                    const stock = row.stock// extract size value
+                    console.log(stock);
+                    console.log(index);
+                    const btn = document.createElement("button");
+                    btn.type = "button";
+                    btn.dataset.size = size;
+                    btn.dataset.stock = stock;
+                    btn.textContent = size;
+
+                    if (index === 0) {
+                        document.getElementById("selected-size").value = size;
+                        document.getElementById("size").innerHTML = "Size: " + size;
+                        updateStock(stock);
+                    }
+
+                    btn.addEventListener("click", () => {
+                        document.getElementById("selected-size").value = size;
+                        document.getElementById("size").innerHTML = "Size: " + size;
+                        updateStock(stock);
+                    });
+
+                    container.appendChild(btn);
+                    });
+                    function updateStock(stock) {
+                        console.log(stock);
+                if (stock >= 5) {
+                    stockInfo.textContent = "In stock";
+                    stockInfo.style.color = "green";
+                    document.getElementById("cartBtn").disabled = false;
+                } else if (stock > 0) {
+                    stockInfo.textContent = `Only ${stock} left in stock. Buy soon`;
+                    stockInfo.style.color = "red";
+                    document.getElementById("cartBtn").disabled = false;
+                } else if(stock == 0) {
+                    stockInfo.textContent = "Out of stock";
+                    stockInfo.style.color = "red";
+                    document.getElementById("cartBtn").disabled = true;
+                }
+            }
+
+
+            });
+            
+            
+            fetch(`/sproduct/${productId}`)
+            .then((res) => res.json())
+            .then(product => {
+               // console.log(product);
+            document.getElementById("main-img").src = product.image_url;
+
+            document.getElementById("product-title").textContent = product.name;
+            document.getElementById("product-price").textContent = `$${product.price}`;
+            document.getElementById("product-category").textContent = `Home / ${product.category || "Category"}`;
+            document.getElementById("cartBtn").dataset.id = productId;
+
+            
+            
+                })
+                
+             fetch(`/sproduct/${productId}/images`)       
+            
+            .then(res => res.json())
+            .then(images => {
+            const thumbContainer = document.getElementById("thumbnail-group");
+            //console.log(images);
+            images.forEach(img => {
+                
+                const div = document.createElement("div");
+                div.classList.add("small-img-col");
+                div.innerHTML = `<img src="${img.additional_image}" width="100%" class="small-img" alt="">`;
+                thumbContainer.appendChild(div);
+                
+            });
+             const smallImgs = document.getElementsByClassName("small-img-col");
+            for (let i = 0; i < smallImgs.length; i++) {
+                smallImgs[i].addEventListener("mouseover", function () {
+                    const img = smallImgs[i].querySelector("img");
+                    if (img) {
+                        mainImg.src = img.src;
+                    }
+                });
+            }
+            
+        })
+         .catch(err => {
+            console.error("Error loading product or images:", err);
+            document.body.innerHTML = "<p>Something went wrong. Try again later.</p>";
+        });
+        })
+
+       //Add to cart
+       
+       document.querySelector("#cartBtn").addEventListener("click", () => {
+        
+       const size = document.getElementById("selected-size").value;
+       //console.log(size);
+       
+        fetch("/api/current_user") //for checking whether user is logged in . 
+            .then(res => {
+                 if (!res.ok) 
+                  window.location.href = "login.html"; //if not, rediredting to login page
+             })
+       const params = new URLSearchParams(window.location.search);
+       const productId = params.get("id");
+            fetch("/cart", {
+                method: "POST",
+                headers: { "Content-Type" : "application/json" },
+
+                body: JSON.stringify({ product_id : productId, quantity: 1, size : size })
+            })
+            .then(res => res.json())
+            .then(data  => {
+               //  console.log(data);
+                //alert("added to Cart");
+                updateCartCount();
+            })
+            .catch(err => console.error("error adding to cart", err));
+        
+    });
+        </script>
+        
+
+    
+<script src="JS/common.js"></script>
+<script src="JS/main.js"></script>
+
+    
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

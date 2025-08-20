@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eshop</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <!--Box Icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    
+    <!--Box Icons-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+</head>
+<body>
+    
+    <section id="header">
+        <a href="index.html"> <img src="img/logo_1.png" class="logo"></a>
+
+        <ul id="profile">
+                   <li id="loginBtn"><a href="login.html"><i class="fa-solid fa-user"></i></a></li>
+                   <li class="dropdown" id="user"><h5>Hello<span id="username"></span></h5>
+                        <ul class="dropdown-content">
+                            <li>Profile</li>
+                            <li><button id="logoutBtn">Log out</button></li>
+                        </ul></li>
+        </ul>
+        <div>
+            <ul id="navbar">                
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="Contact.html">Contact</a></li>
+                
+                <li><a class="active" href="cart.html"><i class="fa-solid fa-cart-shopping" id="cart-icon" data-quantity="0"></i></a></li>
+                <a href="#" id="close"><i class="far fa-times close-btn"></i></a>   
+            </ul>
+        </div>
+        <div id="mobile">
+            <!--<a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>-->
+            <i id="bar" class="fas fa-outdent" style="cursor: pointer;"></i>
+      
+        </div>
+    </section>
+
+    <section id="cart-section">
+        
+            <h2 class="cart-title">Your Cart</h2>
+            <div class="cart-content">
+
+               
+
+                
+            
+        </div>
+
+        <!--Total-->
+                <div class="total">
+                    <div class="total-title">Total</div>
+                    <div class="total-price">$0</div>
+                </div>
+                <!--Buy Button-->
+                <button type="button" class="btn-buy">Pay Now</button>
+                 <!--close cart-->
+                 <i class="bx bx-x" id="close-cart"></i>  
+
+    </section>
+
+     <footer class="section-p1">
+        <div class="col">
+            <img src="img/logo_1.png" class="logo" alt="">
+            <h4>Contact</h4>
+            <p><strong>Phone :</strong>04986325</p>
+            <p><strong>Hours:</strong>9:00 - 6:00, Mon - Fri</p>
+            <div class="follow">
+                <h4>Follow</h4>
+                <div class="icon">
+                    <i class="fab fa-facebook-f"></i>
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-youtube"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <h4>About</h4>
+            <a href="">About Us</a>
+            <a href="">Privacy Policy</a>
+            <a href="">Terms & Conditions</a>
+            <a href="">Contact Us</a>
+        </div>
+
+        <div class="col">
+            <h4>My Account</h4>
+            <a href="">Sign In</a>
+            <a href="">View Cart</a>
+            <a href="">Help</a>
+            <a href="">Contact Us</a>
+        </div>
+
+        <div class="copyright">
+            <p>@2025, reshmamidhun  </p>
+
+        </div>
+    </footer>
+
+    <script src="JS/main.js"></script>
+    <script src="JS/common.js"></script>
+
+    <script>
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+        const cartContent = document.querySelector(".cart-content");
+        const cartItem = document.querySelector(".cart-box");
+        const cartTotal = document.querySelector(".total-price");
+        const quantity = document.querySelector(".cart-quantity");
+        const price = document.querySelector(".cart-price");
+       
+            fetch("/cartView")
+            .then((res) => res.json())
+            .then(cartItems => {
+                if(cartItems.length === 0){
+                   // console.log(cartItems.length);
+                    document.querySelector(".cart-title").innerHTML = `<p style="color:black ;font-weight:500; font-size:24px; text-align:center">Your cart is empty.</p>`;
+                   
+                    
+                    return;
+                }
+
+               let total =0;
+                 cartContent.innerHTML ="";
+                cartItems.forEach(cartItem => {
+                 total += cartItem.quantity * cartItem.price;
+               //  console.log(cartItems);
+                 //console.log(cartItem.size_stock);
+                    const cartDiv = document.createElement("div");
+                    cartDiv.classList.add("cart-box");
+                    cartDiv.setAttribute("data-product-id", cartItem.product_id); 
+                     cartDiv.setAttribute("data-size", cartItem.size);
+                    cartDiv.innerHTML = `
+                                        <img src="${cartItem.image_url}"  alt="" class="cart-img" />
+                    
+                    <div class="detail-box">
+                        <div class="cart-product-title">${cartItem.name}</div>
+                        <div class="cart-price">${cartItem.price}</div>
+                        <p id="stock-info" style="font-size: 12px; color: green; margin: 0"></p>
+                        <div class="cart-size">Size : ${cartItem.size}</div>
+                        
+                    </div>
+                    <input 
+                        type="number"
+                         class="cart-quantity"
+                         min="1"
+                         value="${cartItem.quantity}"
+                         data-cart-id="${cartItem.cart_id}" />
+                         <!-- Remove Item-->
+                    <i class="bx bx-trash-alt cart-remove" data-cart-id="${cartItem.cart_id}"></i> `;
+                    
+                    
+                    cartContent.appendChild(cartDiv);
+                    const stockInfo = cartDiv.querySelector("#stock-info");
+                    if (cartItem.size_stock > 5) {
+                        stockInfo.textContent = "In stock";
+                        stockInfo.style.color = "green";
+                    } else if (cartItem.size_stock > 0) {
+                        stockInfo.textContent = `Only ${cartItem.size_stock} left in stock.`;
+                        stockInfo.style.color = "red";
+                    } else if(cartItem.size_stock == 0) {
+                        stockInfo.textContent = "Out of stock";
+                        stockInfo.style.color = "red";
+                        cartDiv.querySelector(".cart-quantity").disabled = true;
+
+                    }               
+
+                });
+
+
+                  cartTotal.textContent = "$" + total;
+
+                function updateTotal() {
+                    let total = 0;
+                    document.querySelectorAll(".cart-box").forEach(box => {
+                        const price = parseFloat(box.querySelector(".cart-price").textContent);
+                        const qty = parseInt(box.querySelector(".cart-quantity").value);
+                        total += price * qty;
+                    });
+                    document.querySelector(".total-price").textContent = "$" + total.toFixed(2);
+                }
+
+                
+             
+
+                // Add event listener for quantity changes
+
+                cartContent.querySelectorAll(".cart-quantity").forEach(input => {
+                    input.addEventListener("change", e => {
+                        console.log(e);
+                        const newQuantity = parseInt(e.target.value);
+                        if(isNaN(newQuantity) || newQuantity < 1) {
+                            e.target.value = 1;
+                            return;
+                        }
+                        console.log("Quantityup");
+                        const productDiv = e.target.closest(".cart-box");
+                        const productId = productDiv.dataset.productId; 
+                        const size = productDiv.dataset.size;
+                        console.log(size);
+                        fetch("/cartUpdate" , {
+                            method: "POST",
+                            headers: { "Content-Type" : "application/json" },
+                            body: JSON.stringify({ product_id : productId, quantity: newQuantity, size:size })
+                          })
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log("Quantity Updated", data);
+                            updateCartCount();
+                            updateTotal();
+                        })
+                        .catch(err => {
+                            console.error("Error Updating quantity", err);
+                        });
+                    });
+                });
+
+                cartContent.addEventListener("click", e => {
+                    if(e.target.classList.contains("cart-remove")) {
+                       // const cartId = e.target.dataset.cartId;
+                        const productDiv = e.target.closest(".cart-box");
+                        const productId = productDiv.dataset.productId; 
+                        const size = productDiv.dataset.size;
+                        
+
+                        fetch("/cartDelete", {
+                            method: "POST",
+                            headers: { "Content-Type" : "application/json" },
+                            body:JSON.stringify({ product_id:productId, size:size})
+                        })
+                        .then(res  => res.json())
+                        .then(() => {
+                            productDiv.remove();
+                            updateCartCount();
+                            updateTotal();
+                        })
+                        .catch(err => console.error("Error Deleting Item", err));
+                    }
+                })
+
+                });
+
+const payBtn = document.querySelector(".btn-buy");
+payBtn.addEventListener("click", () => {
+    fetch("/cartView")
+        .then(res => {
+            if (!res.ok) {
+            throw new Error("Failed to fetch Cart"); // Capital E
+            }
+            return res.json();
+        })
+        .then(cartItems => {
+
+            const availableItems = cartItems.filter(item => item.size_stock > 0);
+
+          //  console.log(availableItems.length);
+           console.log(availableItems);
+
+            if (availableItems.length === 0) {
+                alert("No Items available in stock for payment");
+                return;
+            }
+            console.log(JSON.stringify({ items: availableItems }));
+            return fetch("/stripe-checkout", {
+                method: "POST",
+                headers:  new Headers({ "Content-Type": "application/json"}),
+                body: JSON.stringify({ items: availableItems }) // lowercase 'items'
+            })
+            .then(res => {
+            if (!res.ok) {
+                throw new Error("Stripe checkout failed");
+            }
+            return res.json();
+        })
+        .then(data => {
+            // Redirect to Stripe checkout page
+            //console.log(data);
+            window.location.href = data.url;
+            
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Something went wrong while processing payment.");
+        });
+        })
+        
+});
+
+
+        });
+    </script>
+    </body>
+    </html>

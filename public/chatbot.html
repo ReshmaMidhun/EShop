@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>E-commerce GPT Chatbot</title>
+  <style>
+    #chatbox { border: 1px solid #ccc; width: 350px; height: 400px; overflow-y: auto; padding: 10px; }
+    .user { color: blue; }
+    .bot { color: green; }
+  </style>
+</head>
+<body>
+  <h2>Shop Chatbot</h2>
+  <div id="chatbox"></div>
+  <input type="text" id="userInput" placeholder="Ask me about products...">
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("userInput").value;
+      document.getElementById("chatbox").innerHTML += 
+        "<p class='user'><b>You:</b> " + input + "</p>";
+
+      // Example product data as context
+      const productData = `
+        Products:
+        1. Nike Air Max - $120 - Comfortable running shoes.
+        2. Polo T-Shirt - $35 - Cotton casual T-Shirt.
+      `;
+
+      // GPT API request (using fetch to your server endpoint)
+      const response = await fetch('/chat-gpt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: productData + "\nCustomer: " + input + "\nAssistant:" })
+      });
+
+      const data = await response.json();
+      const reply = data.reply;
+
+      document.getElementById("chatbox").innerHTML += 
+        "<p class='bot'><b>Bot:</b> " + reply + "</p>";
+
+      document.getElementById("userInput").value = "";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eshop</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <!--Box Icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    
+    <!--Box Icons-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="CSS/admin-style.css">
+</head>
+<body>
+
+    <section id="admin-section">
+        <div class="div1">
+            <h2>ADMIN PANEL</h2>
+            <ul id="lists">
+                <li><a href="addProduct.html"><i class="fa-solid fa-circle-plus"></i>Add Product</a></i></li>
+                <li><a href="listProduct.html"><i class="fa-solid fa-bag-shopping"></i>List Products</a></i></li>
+                <li><a href="notifications.html"><i class="fa-solid fa-receipt"></i> Notifications <span id="msgCount">(0)</span></a></li>
+                <li><a href="#"><i class="fa-solid fa-users"></i> Users</a></li>
+            </ul>
+        </div>
+        <div class="div2"> 
+            <div class="top-bar">
+                <button id="logOut-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>Logout
+                </button>
+            </div>
+
+            <div class="container">
+                <h1>Contact Messages</h1>
+                <table>
+                    <thead>
+                        <tr>
+                        <td>ID</td>
+                        <td>Name</td>
+                        <td>Email</td>
+                        <td>Subject</td>
+                        <td>Message</td>
+                        <td>Received At</td>
+                        <td>Action</td>
+                    </tr>
+                    </thead>
+                    <tbody id="contactTableBody">
+                       
+                    </tbody>
+                </table>
+            </div>
+        
+    <script src="JS/adminMain.js"></script>
+    <script>
+    
+    document.addEventListener("DOMContentLoaded", () => {
+     
+    function loadMessages() {
+        fetch("/loadMessages")
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.getElementById("contactTableBody");
+            tbody.innerHTML = "";
+
+            data.forEach(msg => {
+                const row = `
+                     <tr>
+                            <td data-label="ID">${msg.id}</td>
+                            <td data-label="Name">${msg.name}</td>
+                            <td data-label="Email">${msg.email}</td>
+                            <td data-label="Subject">${msg.subject}</td>
+                            <td data-label="Message">${msg.message}</td>
+                            <td data-label="Date">${new Date(msg.created_at).toLocaleString()}</td>
+                            <td data-label="Status">
+                                ${msg.status === 'unread' ? `<button onclick="markRead(${msg.id})">Mark as Read</button>` : `${msg.status}`}
+                                </td>
+                        </tr>`;
+                        tbody.innerHTML += row;
+            });
+
+        });
+    }
+
+    updateNotificationCount();
+    console.log("function is called");
+    loadMessages();
+    document.getElementById("logOut-btn").addEventListener("click", () => {
+        window.location.href = "login.html";
+    });
+    });
+
+    function markRead(id) {
+        console.log(id);
+        fetch("/markAsRead", {
+            method:"POST",
+            headers: { "Content-Type" : "application/json" },
+            body: JSON.stringify({ id })
+        })
+        .then(res => res.json())
+        .then(data => {
+            //alert(data.message);
+            document.dispatchEvent(new Event("DOMContentLoaded")); 
+        })
+    }
+
+    
+
+</script>
+
+</body>
+</html>

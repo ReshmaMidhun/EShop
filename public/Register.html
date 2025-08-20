@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eshop</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <!--Box Icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    
+    <!--Box Icons-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-top: 2px;
+            margin-left: 30px;
+            height: 14px;
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+
+     <section id="header">
+        <a href="index.html"> <img src="img/logo_1.png" class="logo"></a>
+
+        <ul id="profile">
+                   <li id="loginBtn"><a href="login.html"><i class="fa-solid fa-user"></i></a></li>
+                   <li class="dropdown" id="user"><h5>Hello<span id="username"></span></h5>
+                        <ul class="dropdown-content">
+                            <li>Profile</li>
+                            <li><button id="logoutBtn">Log out</button></li>
+                        </ul></li>
+        </ul>
+        <div>
+            <ul id="navbar">                
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="Contact.html">Contact</a></li>
+                
+                <li><a class="active" href="cart.html"><i class="fa-solid fa-cart-shopping" id="cart-icon" data-quantity="0"></i></a></li>
+                <a href="#" id="close"><i class="far fa-times close-btn"></i></a>   
+            </ul>
+        </div>
+        <div id="mobile">
+            <!--<a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>-->
+            <i id="bar" class="fas fa-outdent" style="cursor: pointer;"></i>
+      
+        </div>
+    </section>
+
+    <section id="section-container">
+        <div class="register-container">
+            <form action="login.html" id="loginForm" method="post">
+                <div class="title">
+                    <h2>Register</h2>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="name" class="input-field" placeholder="Name">
+                    <i class="bx bx-user"></i>
+                    <small class="error" id="nameError"></small>
+                </div>
+                <div class="input-box">
+                    <input type="email" id="email" class="input-field" placeholder="Email">
+                    <i class="bx bx-lock-alt"></i>
+                    <small class="error" id="emailError"></small>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="password" class="input-field" placeholder="Password">
+                    <i class="bx bx-lock-alt"></i>
+                    <small class="error" id="passwordError"></small>
+                </div>
+                <div class="input-box">
+                    <input type="submit" class="submit" placeholder="Login">
+                    
+                </div>
+                <div class="bottom">
+                    <h5>Already have an account?  <a href="login.html">Login</a></h5>
+                
+                </div> 
+            </form>
+        </div>
+    </section>
+
+   
+
+     <footer class="section-p1">
+        <div class="col">
+            <img src="img/logo_1.png" class="logo" alt="">
+            <h4>Contact</h4>
+            <p><strong>Phone :</strong>04986325</p>
+            <p><strong>Hours:</strong>9:00 - 6:00, Mon - Fri</p>
+            <div class="follow">
+                <h4>Follow Us</h4>
+                <div class="icon" id="social-icons">
+                    <i class="fab fa-facebook-f"></i>
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-youtube"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <h4>About</h4>
+            <a href="about.html">About Us</a>
+            <a href="">Privacy Policy</a>
+            <a href="">Terms & Conditions</a>
+            <a href="contact.html">Contact Us</a>
+        </div>
+
+        <div class="col">
+            <h4>My Account</h4>
+            <a href="login.html">Sign In</a>
+            <a href="cart.html">View Cart</a>
+            <a href="">Help</a>
+            
+        </div>
+
+        <div class="copyright">
+            <p>@2025, reshmamidhun  </p>
+
+        </div>
+    </footer>
+
+    <script>
+        const nameInput = document.getElementById("name");
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const nameErrorMsg = document.getElementById("nameError");
+        const emailErrorMsg = document.getElementById("emailError");
+        const passwordErrorMsg = document.getElementById("passwordError");
+        const form = document.getElementById("loginForm");
+
+
+        nameInput.addEventListener("input", () => {
+            const value = nameInput.value.trim();
+            console.log(value);
+            if (value === "") {
+               nameErrorMsg.textContent = "Name must be at least 3 characters";
+               console.log( nameErrorMsg.textContent);
+            } 
+            else if (value.length < 3) {
+               nameErrorMsg.textContent = "Name must be at least 3 characters";
+               console.log( nameErrorMsg.textContent);
+            } 
+            else if (!/^[A-Za-z\s]+$/.test(value)) {
+                nameErrorMsg.textContent = "Name can only contain letters and spaces";
+            }
+            else {
+                nameErrorMsg.textContent = "";
+            }
+        });
+         emailInput.addEventListener("input", () => {
+            const value = emailInput.value.trim();
+
+            if (value === "") {
+                emailErrorMsg.textContent = "Email is required";
+            } 
+            else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                emailErrorMsg.textContent = "Enter a valid email address";
+            } 
+            else {
+                emailErrorMsg.textContent = "";
+            }
+        });
+
+        passwordInput.addEventListener("input", () => {
+            const value = passwordInput.value.trim();
+
+            if (value === "") {
+                passwordErrorMsg.textContent = "Password is required";
+            } 
+            else if (value.length < 6) {
+                passwordErrorMsg.textContent = "Password must be at least 6 characters";
+            } 
+            else if (!/[A-Z]/.test(value)) {
+                passwordErrorMsg.textContent = "Password must contain at least 1 uppercase letter";
+            }
+            else if (!/[a-z]/.test(value)) {
+                passwordErrorMsg.textContent = "Password must contain at least 1 lowercase letter";
+            }
+            else if (!/[0-9]/.test(value)) {
+                passwordErrorMsg.textContent = "Password must contain at least 1 number";
+            }
+            else if (!/[@$!%*?&]/.test(value)) {
+                passwordErrorMsg.textContent = "Password must contain at least 1 special character (@$!%*?&)";
+            }
+            else {
+                passwordErrorMsg.textContent = ""; // Clear error
+            }
+        });
+     
+
+         form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if(!name || !email || !password) {
+                passwordErrorMsg.textContent = "Please Fill All fields";
+                console.log(passwordErrorMsg.textContent);
+                return;
+            }
+
+             // Check if any error messages are present
+            if(nameErrorMsg.textContent || emailErrorMsg.textContent || passwordErrorMsg.textContent) {
+                // Stop submission if any validation error exists
+                return;
+            }
+            
+            
+            console.log(name);
+            console.log(email);
+            console.log(password);
+             try {
+                const res = await fetch("/register", {
+                    method: "POST",
+                    headers: {"Content-Type" : "application/json" },
+                    body: JSON.stringify({ name, email, password })
+                });
+                const data = await res.json();
+
+
+                if(res.ok) {
+                    passwordErrorMsg.textContent = "Registration Successfull";
+                    window.location.href = "login.html";
+                } else {
+                    passwordErrorMsg.textContent = data.message || " Error In Registration";
+                    document.getElementById("name").value = "";
+                    document.getElementById("email").value = "";
+                    document.getElementById("password").value = "";
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Server Error, Please Try Again ");
+            }
+                    
+        });
+
+                
+          
+    </script>
+     <script src="JS/main.js"></script>
+</body>
+</html>

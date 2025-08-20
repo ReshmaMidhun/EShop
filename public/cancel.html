@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eshop</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <!--Box Icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    
+    <!--Box Icons-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .success-message{
+            margin: 50px 80px; background-color: #fff; width: 700px; height: 300px;
+            box-shadow: 1px 1px 7px 1px rgba(0, 0, 0, 0.2);
+            text-align: center; 
+        }
+        a {
+            text-decoration: none;
+            color: #2162a1;
+        }
+        p{color: black; margin-top: 50px;}
+
+    </style>
+</head>
+<body>
+
+     <section id="header">
+        <a href="index.html"> <img src="img/logo_1.png" class="logo"></a>
+
+        <ul id="profile">
+                   <li id="loginBtn"><a href="login.html"><i class="fa-solid fa-user"></i></a></li>
+                   <li class="dropdown" id="user"><h5>Hello<span id="username"></span></h5>
+                        <ul class="dropdown-content">
+                            <li>Profile</li>
+                            <li><button id="logoutBtn">Log out</button></li>
+                        </ul></li>
+        </ul>
+        <div>
+            <ul id="navbar">                
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="Contact.html">Contact</a></li>
+                
+                <li><a href="cart.html"><i class="fa-solid fa-cart-shopping" id="cart-icon" data-quantity="0"></i></a></li>
+                <a href="#" id="close"><i class="far fa-times close-btn"></i></a>   
+            </ul>
+        </div>
+        <div id="mobile">
+            <!--<a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>-->
+            <i id="bar" class="fas fa-outdent" style="cursor: pointer;"></i>
+      
+        </div>
+    </section>
+
+    <section id="section-container">
+       <div class="success-message">
+            <h2>Something Went Wrong</h2>
+            <p>We apologise for the inconvenience, but an error occured while processing your order request.</p>
+            <p>For any support Email : support@company.com</p>
+            <a href="index.html" class="sc-btn">Back To HomePage</a>
+
+        </div>
+
+       </div>
+    </section>
+
+   
+
+     <footer class="section-p1">
+        <div class="col">
+            <img src="img/logo_1.png" class="logo" alt="">
+            <h4>Contact</h4>
+            <p><strong>Phone :</strong>04986325</p>
+            <p><strong>Hours:</strong>9:00 - 6:00, Mon - Fri</p>
+            <div class="follow">
+                <h4>Follow</h4>
+                <div class="icon">
+                    <i class="fab fa-facebook-f"></i>
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-youtube"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <h4>About</h4>
+            <a href="">About Us</a>
+            <a href="">Privacy Policy</a>
+            <a href="">Terms & Conditions</a>
+            <a href="">Contact Us</a>
+        </div>
+
+        <div class="col">
+            <h4>My Account</h4>
+            <a href="">Sign In</a>
+            <a href="">View Cart</a>
+            <a href="">Help</a>
+            <a href="">Contact Us</a>
+        </div>
+
+        <div class="copyright">
+            <p>@2025, reshmamidhun  </p>
+
+        </div>
+    </footer>
+
+    <script>
+        
+        document.getElementById("loginForm").addEventListener("submit" , async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value.trim();
+            const errorMsg = document.getElementById("errorMsg");
+            
+            if(!email || !password) {
+                alert("Please Fill All Fields");
+                return;
+            }
+            
+            try {
+                const res = await fetch("/login", {
+                    method: "POST",
+                    headers: {"Content-Type" : "application/json" },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+                console.log(data);
+
+                if(res.ok) {
+                    //alert("Login Successfull");
+                    window.location.href = "index.html";
+                } else {
+                    errorMsg.textContent = data.message || "Invalid Credentials";
+                    document.getElementById("email").value = "";
+                    document.getElementById("password").value = "";
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Server Error, Please Try Again ");
+            }
+                    
+        })
+        
+        
+    </script>
+    <script src="JS/common.js"></script>
+</body>
+</html>
