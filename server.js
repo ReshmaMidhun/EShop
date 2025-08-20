@@ -561,7 +561,6 @@ app.get("/getProducts", (req, res) => {
     })
 
 })
-const PORT = process.env.PORT|| 3006;
-app.listen(PORT, () => {
-    console.log(`Server is Running on port ${PORT}`);
-})
+app.listen(3006, "0.0.0.0", () => {
+    console.log("Server is Running on port 3006");
+});
