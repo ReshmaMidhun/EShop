@@ -37,7 +37,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,           
     cookie: {
-        secure: isProduction,       // true in production, false locally
+        secure: false,       // true in production, false locally
         maxAge: 1000 * 60 * 60      // 1 hour
     }
 }));
@@ -565,6 +565,7 @@ const PORT = 80;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
 
 
 
