@@ -563,8 +563,9 @@ app.get("/getProducts", (req, res) => {
 })
 const PORT = 80; 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT} hai reshma`);
 });
+
 
 
 
