@@ -45,9 +45,9 @@ app.get("/", (req, res) => {
     res.sendFile("index.html", { root : "public"});
 })
 //Success
-app.get("/success", (req, res) => {
+/*app.get("/success", (req, res) => {
     res.sendFile("success.html", { root: "public"});
-});
+});*/
 
 //Cancel
 app.get("/cancel", (req, res) => {
@@ -109,7 +109,7 @@ app.post("/addProduct", upload.fields([
                 // Send response once if no additional images
                 
             }
-           return res.json({ message: "Product added successfully with main image only." });
+           return res.json({ message: "Product added successfully." });
     
     });
 });
@@ -167,7 +167,7 @@ app.get("/adminViewProducts",  (req, res) => {
         ps.size AS size, ps.stock AS stock FROM products p 
         LEFT JOIN categories c ON p.category_id = c.id 
         LEFT JOIN subcategories s ON p.subcategory_id = s.id 
-        LEFT JOIN product_sizes ps ON p.id = ps.product_id 
+        INNER JOIN product_sizes ps ON p.id = ps.product_id  
         ORDER BY id DESC`;
     db.query(sql, (err, result) => {
         if(err) {
@@ -194,17 +194,49 @@ app.post("/updateStock", (req, res) => {
 
 app.post("/deleteItem", (req, res) => {
     const { product_id, size } = req.body;
-    const sql ="DELETE FROM product_sizes WHERE product_id = ? AND size = ?";
-    console.log(sql);
-    console.log(product_id, size);
 
-    db.query(sql, [product_id , size], (err, result) => {
-        if(err){ console.error(err);
-            return res.status(500).json({ message : "Error in Updation" });
+    const deleteSizeSql = "DELETE FROM product_sizes WHERE product_id = ? AND size = ?";
+    const deleteCartSql = "DELETE FROM cart WHERE product_id = ? AND size = ?";
+    const checkSizesSql = "SELECT COUNT(*) AS count FROM product_sizes WHERE product_id = ?";
+    const deleteProductSql = "DELETE FROM products WHERE id = ?";
+
+    db.query(deleteSizeSql, [product_id, size], (err) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: "Error deleting from product_sizes" });
         }
-        res.json({ message : "Deleted Successfully "});
+
+        db.query(deleteCartSql, [product_id, size], (err1) => {
+            if (err1) {
+                console.error(err1);
+                return res.status(500).json({ message: "Error deleting from cart" });
+            }
+
+            // Check if product has any sizes left
+            db.query(checkSizesSql, [product_id], (err2, result2) => {
+                if (err2) {
+                    console.error(err2);
+                    return res.status(500).json({ message: "Error checking remaining sizes" });
+                }
+
+                if (result2[0].count === 0) {
+                    // No sizes left → delete product
+                    db.query(deleteProductSql, [product_id], (err3) => {
+                        if (err3) {
+                            console.error(err3);
+                            return res.status(500).json({ message: "Error deleting product" });
+                        }
+                        return res.json({ message: "Product and all sizes deleted successfully" });
+                    });
+                } else {
+                    // Sizes still exist → just confirm size deletion
+                    return res.json({ message: "Size deleted successfully" });
+                }
+            });
+        });
     });
-})
+});
+
 
 app.post("/submitContact", (req, res) => {
     const { name, email, subject, message } = req.body;
@@ -363,21 +395,79 @@ app.get('/sproduct/:id/images', (req, res) => {
 });
 
 app.post("/cart", (req, res) => {
-    
-    const { product_id,quantity, size} = req.body;
+    const { product_id, quantity, size } = req.body;
     const user_id = req.session.user.id;
-    const query = "INSERT INTO cart (user_id, product_id,size, quantity) VALUES(?, ?,?, ?) ON DUPLICATE KEY UPDATE quantity = quantity +?";
-    db.query(query, [user_id, product_id,size , quantity, quantity], (err) => {
-        if(err) return res.status(500).json({ error:err });
-        res.json({ message : "Insertion Successful" });
-    });
-    /*const stock_query ="UPDATE products SET stock = stock - ? WHERE id =? AND stock =?";
-    db.query(stock_query, [quantity, product_id, quantity], (err, result1) => {
-        if(err) return res.status(500).json({ error: err });
 
-        res.json({ message : "stock updated" });
-    })*/
-})
+    // 1. Check how many of this product+size user already has in cart
+    const cartQuery = `
+        SELECT quantity 
+        FROM cart 
+        WHERE user_id = ? AND product_id = ? AND size = ?
+    `;
+    db.query(cartQuery, [user_id, product_id, size], (err, cartResults) => {
+        if (err) return res.status(500).json({ error: err });
+
+        const cartQty = cartResults.length > 0 ? cartResults[0].quantity : 0;
+
+        // 2. Check stock for this product+size
+        const stockQuery = "SELECT stock FROM product_sizes WHERE product_id = ? AND size = ?";
+        db.query(stockQuery, [product_id, size], (err, stockResults) => {
+            if (err) return res.status(500).json({ error: err });
+
+            if (stockResults.length === 0) {
+                return res.status(404).json({ message: "Product not found for this size" });
+            }
+
+            const stock = stockResults[0].stock;
+
+            // 3. Validate
+            if (stock <= 0) {
+                return res.status(400).json({ message: "Product is out of stock"  });
+                    }
+
+            if (cartQty + quantity > stock) {
+                return res.status(400).json({ message: `Only ${stock - cartQty} more item(s) available` });
+            }
+
+            // 4. Safe to insert/update cart
+            const insertQuery = `
+                INSERT INTO cart (user_id, product_id, size, quantity)
+                VALUES (?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE quantity = quantity + ?
+            `;
+            db.query(insertQuery, [user_id, product_id, size, quantity, quantity], (err) => {
+                if (err) return res.status(500).json({ error: err });
+                res.json({ message: "Product added to cart" });
+            });
+        });
+    });
+});
+
+app.get("/relatedProducts/:id", (req, res) => {
+    const product_id = req.params.id;
+
+    // 1. Get category_id and subcategory_id of current product
+    const sql = "SELECT category_id, subcategory_id FROM products WHERE id = ?";
+    console.log("product_id "+product_id);
+    console.log("sql "+ sql);
+
+    db.query(sql, [product_id], (err, result) => {
+        if (err) return res.status(500).json({ error: err });
+        if (result.length === 0) return res.status(404).json({ error: "Product not found" });
+
+        const cat_id = result[0].category_id;
+        const subcat_id = result[0].subcategory_id;
+
+        // 2. Get related products
+        const sql2 = "SELECT * FROM products WHERE category_id = ? AND subcategory_id = ? AND id != ? LIMIT 4";
+        db.query(sql2, [cat_id, subcat_id, product_id], (err2, result2) => {
+            if (err2) return res.status(500).json({ error: err2 });
+
+            res.json(result2);
+        });
+    });
+});
+
 
 app.get("/cartCount", (req, res) => {
     if (!req.session || !req.session.user) {
@@ -409,19 +499,34 @@ app.get("/cartView", (req, res) => {
     })
 })
 
-app.post("/cartUpdate", (req, res) => {
-    const {product_id, quantity, size } =req.body;
+app.post("/cart/update", (req, res) => {
+    const { product_id, size, quantity } = req.body;
     const user_id = req.session.user.id;
-    const query ="UPDATE cart SET quantity =? WHERE user_id =? AND product_id =? AND size =?";
-    db.query(query, [quantity, user_id,product_id, size], (err, result) => {
-        if(err) {
-            console.error("DB Update Error", err);
-            return res.status(500).res.json({ error : " Database Update Failed "});
-        }
-        res.json( { message: " Quantity Updated"});
-    })
 
-})
+    // 1. Get current stock
+    const stockQuery = "SELECT stock FROM product_sizes WHERE product_id = ? AND size = ?";
+    db.query(stockQuery, [product_id, size], (err, stockResults) => {
+        if (err) return res.status(500).json({ error: err });
+        if (stockResults.length === 0) {
+            return res.status(404).json({ message: "Product not found for this size" });
+        }
+
+        const stock = stockResults[0].stock;
+
+        // 2. Check if requested quantity exceeds stock
+        if (quantity > stock) {
+            return res.status(400).json({ message: `Only ${stock} item(s) available` });
+        }
+
+        // 3. Update cart
+        const updateQuery = "UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ? AND size = ?";
+        db.query(updateQuery, [quantity, user_id, product_id, size], (err, result) => {
+            if (err) return res.status(500).json({ error: err });
+            res.json({ message: "Cart updated successfully" });
+        });
+    });
+});
+
 
 
 app.post("/cartDelete", (req, res) => {

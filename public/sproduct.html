@@ -9,6 +9,35 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!--Box Icons-->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        #toast-container {
+            position: fixed;
+            top: 180px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+    .toast {
+        background: #4CAF50; /* success = green */
+        color: white;
+        padding: 6px 12px;
+        margin-bottom: 8px;
+        margin-right: 20px;
+        border-radius: 4px;
+        font-size: 14px;         
+        min-width: 120px;        
+        max-width: 250px; 
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        opacity: 0;
+        transform: translateX(120%);
+        transition: all 0.5s ease;
+    }
+
+    .toast.show {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    </style>
 </head>
 <body>
 
@@ -67,51 +96,22 @@
             <p id="stock-info" style="font-size: 14px; color: green; margin-bottom: 10px;" ></p>
             <button class="normal" id="cartBtn">Add To Cart</button>
             <h4>Product details</h4>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem saepe fuga, voluptas maxime hic quasi deserunt eaque, inventore, voluptatibus perspiciatis amet eius sed sunt dolores. Obcaecati deserunt cumque sit eum?</p>
+            <p id="product-description">Loree</p>
 
         </div>
     </section>
 
 
     <section id="product-section"  class="section-p1">
-        <h2>Featured Products</h2>
+        <h2>Related Products</h2>
         <p>Summer Collection New Modern Design</p>
         <div class="product-container">
-            <div class="product">
-                <img src="img/p_img1.png" alt="" class="product-img"/>
-                <div class="description"> </div>
-                <div class="product-title">Womens Floral Top</div>
-                <div class="price">$50</div>
-                <i class="bx bx-shopping-bag add-cart"></i>
-                
-            </div>
+            
 
-            <div class="product">
-                <img src="img/p_img1.png" alt="" class="product-img"/>
-                <div class="description"> </div>
-                <div class="product-title">Womens Floral Top</div>
-                <div class="price">$50</div>
-                <i class="bx bx-shopping-bag add-cart"></i>
-                
-            </div>
 
-            <div class="product">
-                <img src="img/p_img1.png" alt="" class="product-img"/>
-                <div class="description"> </div>
-                <div class="product-title">Womens Floral Top</div>
-                <div class="price">$50</div>
-                <i class="bx bx-shopping-bag add-cart"></i>
-                
-            </div>
+            
 
-            <div class="product">
-                <img src="img/p_img1.png" alt="" class="product-img"/>
-                <div class="description"> </div>
-                <div class="product-title">Womens Floral Top</div>
-                <div class="price">$50</div>
-                <i class="bx bx-shopping-bag add-cart" ></i>
-                
-            </div>
+            
 
 
         </div>
@@ -221,23 +221,25 @@
                     });
                     function updateStock(stock) {
                         console.log(stock);
-                if (stock >= 5) {
-                    stockInfo.textContent = "In stock";
-                    stockInfo.style.color = "green";
-                    document.getElementById("cartBtn").disabled = false;
-                } else if (stock > 0) {
-                    stockInfo.textContent = `Only ${stock} left in stock. Buy soon`;
-                    stockInfo.style.color = "red";
-                    document.getElementById("cartBtn").disabled = false;
-                } else if(stock == 0) {
-                    stockInfo.textContent = "Out of stock";
-                    stockInfo.style.color = "red";
-                    document.getElementById("cartBtn").disabled = true;
-                }
-            }
+                        if (stock >= 5) {
+                            stockInfo.textContent = "In stock";
+                            stockInfo.style.color = "green";
+                            document.getElementById("cartBtn").disabled = false;
+                        } else if (stock > 0) {
+                            stockInfo.textContent = `Only ${stock} left in stock. Buy soon`;
+                            stockInfo.style.color = "red";
+                            document.getElementById("cartBtn").disabled = false;
+                        } else if(stock == 0) {
+                            stockInfo.textContent = "Out of stock";
+                            stockInfo.style.color = "red";
+                            document.getElementById("cartBtn").disabled = true;
+                        }
+                    }
 
 
-            });
+
+
+                });
             
             
             fetch(`/sproduct/${productId}`)
@@ -250,6 +252,7 @@
             document.getElementById("product-price").textContent = `$${product.price}`;
             document.getElementById("product-category").textContent = `Home / ${product.category || "Category"}`;
             document.getElementById("cartBtn").dataset.id = productId;
+            document.getElementById("product-description").textContent = product.description;
 
             
             
@@ -284,7 +287,42 @@
             console.error("Error loading product or images:", err);
             document.body.innerHTML = "<p>Something went wrong. Try again later.</p>";
         });
+
+
+
+        
+                     fetch(`/relatedProducts/${productId}`)
+        .then(res => res.json())
+        .then(products => {
+            console.log(products);
+             const container = document.querySelector(".product-container");
+             container.innerHTML = "";
+
+             products.forEach(product => {
+                const box = document.createElement("div");
+                box.classList.add("product");
+
+                box.innerHTML = `
+                <img src="${product.image_url}" alt="" class="product-img">
+                <div class="description"> </div>
+                <div class="product-title">${product.name}</div>
+                <div class="price">${product.price}</div>
+                <i class="bx bx-shopping-bag add-cart" data-id="16"></i>
+                `;
+
+                container.appendChild(box); 
+
+                box.addEventListener("click", (e) => {
+                    window.location.href = `sproduct.html?id=${product.id}`;
+                })
+
+             })
         })
+
+
+        })
+
+
 
        //Add to cart
        
@@ -307,21 +345,55 @@
                 body: JSON.stringify({ product_id : productId, quantity: 1, size : size })
             })
             .then(res => res.json())
+
             .then(data  => {
                //  console.log(data);
                 //alert("added to Cart");
+                showToast(data.message);
                 updateCartCount();
+                if (data.error) {
+                    showToast("Error: " + data.error, "error");
+                } else {
+                    showToast(data.message, "success");
+                }
             })
             .catch(err => console.error("error adding to cart", err));
         
     });
+
+   
+
+    //Toast Message
+    function showToast(message, type = "success") {
+        const container = document.getElementById("toast-container");
+
+        // Remove existing toasts before adding a new one
+    container.querySelectorAll(".toast").forEach(toast => toast.remove());
+
+        const toast = document.createElement("div");
+        toast.classList.add("toast", "show");
+        toast.textContent = message;
+
+        // Different colors based on type
+        if (type === "error") toast.style.background = "#f44336"; // red
+        if (type === "info") toast.style.background = "#2196F3"; // blue
+        if (type === "warning") toast.style.background = "#ff9800"; // orange
+
+        container.appendChild(toast);
+
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            toast.classList.remove("show");
+            setTimeout(() => toast.remove(), 500);
+        }, 3000);
+        }
         </script>
         
 
     
 <script src="JS/common.js"></script>
 <script src="JS/main.js"></script>
-
+<div id="toast-container"></div>
     
 </body>
 </html>

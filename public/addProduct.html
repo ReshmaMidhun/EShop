@@ -13,6 +13,37 @@
     <!--Box Icons-->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="CSS/admin-style.css">
+
+    <style>
+    #toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+      z-index: 9999;
+    }
+
+    .toast {
+        background: #4CAF50; /* success = green */
+        color: white;
+        padding: 6px 12px;
+        margin-bottom: 8px;
+        margin-right: 20px;
+        border-radius: 4px;
+        font-size: 14px;         
+        min-width: 120px;        
+        max-width: 250px; 
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        opacity: 0;
+        transform: translateX(120%);
+        transition: all 0.5s ease;
+    }
+
+    .toast.show {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    </style>
 </head>
 <body>
 
@@ -62,9 +93,10 @@
                             <label for="category">Category</label>
                             <select name="category" id="category" required>
                                 <option value="">--SELECT CATEGORY--</option>
-                                <option value="1">Men</option>
-                                <option value="2">Women</option>
-                                <option value="3">Kids</option>
+                                <option value="1">All</option>
+                                <option value="2">Men</option>
+                                <option value="3">Women</option>
+                                <option value="4">Kids</option>
                             </select>
                         </div>
 
@@ -114,13 +146,17 @@
         </div>
     </section>
 
+    <div id="toast-container"></div>
+
+
 <script src="JS/adminMain.js"></script>     
 <script>
 
     const subcategories = {
-      1: ["T-Shirt", "Jeans", "Shirt","Pant", "Jackets"],
-      2: ["Saree", "Kurti", "Top", "Jeans","Blazer"],
-      3: ["Frock", "Shorts", "T-Shirt","Combo Sets"]
+      1:[],
+      2: ["T-Shirt", "Jeans", "Shirt","Pant", "Jackets"],
+      3: ["Saree", "Kurti", "Top", "Jeans","Blazer"],
+      4: ["Frock", "Shorts", "T-Shirt","Combo Sets", "Shirt"]
     };
 
     const categorySelect = document.getElementById("category");
@@ -162,7 +198,7 @@
             .then(res => res.json())
             .then(data => {
                  console.log(data.message);
-                 alert(data.message);
+                 showToast(data.message);
                   form.reset();
             })
                    
@@ -173,6 +209,28 @@
             });
 
         });
+
+        function showToast(message, type = "success") {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+
+            toast.classList.add("toast", "show");
+            toast.textContent = message;
+
+            // Different colors based on type
+            if (type === "error") toast.style.background = "#f44336"; // red
+            if (type === "info") toast.style.background = "#2196F3"; // blue
+            if (type === "warning") toast.style.background = "#ff9800"; // orange
+
+            container.appendChild(toast);
+
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove("show");
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
 </script>
 
 </body>
