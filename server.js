@@ -612,7 +612,7 @@ const [cartItems] = await dbPromise.query(`SELECT c.product_id,c.size,c.quantity
                 //const product_size = item.size;
                 if (ids.length > 0) {
     const placeholders = ids.map(() => '?').join(',');
-    await dbPromise.query(`DELETE C FROM cart c JOIN product_sizes ps ON ps.product_id = c.product_id AND ps.size = c.size WHERE c.user_id =? AND ps.stock > 0`, [userId]);
+    await dbPromise.query(`DELETE c FROM cart c JOIN product_sizes ps ON ps.product_id = c.product_id AND ps.size = c.size WHERE c.user_id =? AND ps.stock > 0`, [userId]);
     for (const item of cartItems) {
         await dbPromise.query(`UPDATE product_sizes SET stock = stock - ? WHERE product_id = ? AND size = ? AND stock >= ?`, [item.quantity, item.product_id, item.size, item.quantity]);
     }
@@ -670,6 +670,7 @@ const PORT = process.env.PORT || 80;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
 
 
 
