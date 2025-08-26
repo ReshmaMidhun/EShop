@@ -107,7 +107,7 @@ td::before {
                             <th>Image</th>
                             <th>Name</th>
                             <th>Category</th>
-                            <th>Subcategory</th>
+                            
                             <th>Size</th>
                             <th>Price ($)</th>
                             <th>Stock</th>
@@ -135,7 +135,7 @@ td::before {
                                     <td data-label="Image"><img src="${p.image_url}" width="60" height="60" style="object-fit:cover;"></td>
                                     <td data-label="Name">${p.name}</td>
                                     <td data-label="Category">${p.category || "-"}</td>
-                                    <td data-label="Sub Category">${p.subcategory || "-"}</td>
+                                    
                                     <td data-label="Size">${p.size}</td>
                                     <td data-label="Price">${p.price}</td>
                                     <td data-label="stock">${p.stock}</td>
@@ -233,4 +233,5 @@ td::before {
   </section>
   <div id="toast-container"></div>
 </body>
+
 </html>
