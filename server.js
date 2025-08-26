@@ -341,7 +341,7 @@ app.post("/logout", (req, res) => {
 });
 
 app.get("/products", (req, res) => {
-    db.query("SELECT * FROM PRODUCTS", (err, result) => {
+    db.query("SELECT * FROM products", (err, result) => {
         if(err) {
             console.log("Error in Fetching");
             res.status(500).send("Error Fetching products");
@@ -670,6 +670,7 @@ const PORT = process.env.PORT || 80;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
 
 
 
