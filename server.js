@@ -163,10 +163,8 @@ app.post("/register", (req, res) => {
 app.get("/adminViewProducts",  (req, res) => {
     const sql = `SELECT p.id, p.name,p.price, p.image_url, 
         c.name AS category, 
-        s.name AS subcategory, 
         ps.size AS size, ps.stock AS stock FROM products p 
         LEFT JOIN categories c ON p.category_id = c.id 
-        LEFT JOIN subcategories s ON p.subcategory_id = s.id 
         INNER JOIN product_sizes ps ON p.id = ps.product_id  
         ORDER BY id DESC`;
     db.query(sql, (err, result) => {
@@ -670,6 +668,7 @@ const PORT = process.env.PORT || 80;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
 
 
 
