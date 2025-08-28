@@ -348,6 +348,27 @@ app.get("/products", (req, res) => {
         res.json(result);
     })
 })
+// Route to get products (with optional search query)
+app.get("/searchproducts", (req, res) => {
+    const searchQuery = req.query.q; // read ?q=searchTerm from URL
+    console.log("searchQuery "+searchQuery);
+    let sql = "SELECT * FROM products"; // default: fetch all
+    
+    if (searchQuery) {
+        // If search query exists, filter by product name
+        sql += " WHERE name LIKE ?";
+    }
+    console.log("sql "+sql);
+    db.query(sql, searchQuery ? [`%${searchQuery}%`] : [], (err, result) => {
+        if (err) {
+            console.log("Error in fetching products:", err);
+            res.status(500).send("Error fetching products");
+            return;
+        }
+        res.json(result);
+        console.log("result "+ JSON.stringify(result, null, 2));
+    });
+});
 
 
 app.get("/sproduct", (req, res) => {
@@ -664,7 +685,7 @@ app.get("/getProducts", (req, res) => {
     })
 
 })
-const PORT = process.env.PORT || 80; 
+const PORT = 80; 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });

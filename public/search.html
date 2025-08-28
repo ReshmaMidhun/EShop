@@ -7,15 +7,19 @@
     <link rel="stylesheet" href="CSS/style.css">
     <!--Box Icons-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    
     <!--Box Icons-->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
 </head>
 <body>
 
- <section id="header">
+    <section id="header">
         <a href="index.html"> <img src="img/logo_1.png" class="logo"></a>
 
-        <ul id="profile">
+         <ul id="profile">
                    <li id="loginBtn"><a href="login.html"><i class="fa-solid fa-user"></i></a></li>
                    <li class="dropdown" id="user"><h5>Hello<span id="username"></span></h5>
                         <ul class="dropdown-content">
@@ -32,22 +36,24 @@
         </div>
         <div>
             <ul id="navbar">                
-                <li><a href="index.html">Home</a></li>
+                <li><a class="active" href="index.html">Home</a></li>
                 <li><a href="shop.html">Shop</a></li>
-                <li><a class="active" href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="Contact.html">Contact</a></li>
                 
-               <li><a href="cart.html"><i class="fa-solid fa-cart-shopping" id="cart-icon" data-quantity="0"></i></a></li>
+                <li><a href="cart.html"><i class="fa-solid fa-cart-shopping" id="cart-icon" data-quantity="0"></i></a></li>
                 <a href="#" id="close"><i class="far fa-times close-btn"></i></a>   
             </ul>
         </div>
+        
         <div id="mobile">
             <!--<a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>-->
             <i id="bar" class="fas fa-outdent" style="cursor: pointer;"></i>
       
         </div>
     </section>
-    <!-- Mobile search bar -->
+    
+     <!-- Mobile search bar -->
     <div id="mobile-search-container">
         <form id="mobile-search-form" action="search.html" method="GET">
             <input type="text" name="q" id="mobile-search-input" placeholder="Search for products..." required>
@@ -55,12 +61,30 @@
         </form>
     </div>
 
-    <section id="aboutSection">
-        <h2>About Us</h2>
-        <p> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos, neque illum perspiciatis ea voluptatum vel. Illum incidunt temporibus omnis fugit aliquid, tempore quasi suscipit sit dolorem, amet quos laboriosam. Magni!Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corrupti nam error blanditiis enim? Accusamus dolorum sunt cum inventore beatae. Minus ipsum consequuntur rem recusandae doloremque soluta atque sequi et.</p>
+     <section id="product-section"  class="section-p1">
+        <h2>Keep Shopping</h2>
+        <p>Summer Collection New Modern Design</p>
+        <div class="product-container">
+            
+
+            
+
+           
+
+            
+
+            
+
+        </div>
     </section>
 
-      <section id="newsletter" class="section-p1 section-m1">
+    <section id="banner" class="section-m1">
+        <h4>Repair Services</h4>
+        <h2>Up to <span>70% Off</span> All t-shirts</h2>
+        <button class="normal">Shop More</button>
+    </section>
+
+    <section id="newsletter" class="section-p1 section-m1">
         <div class="newstext">
             <h4>Sign Up for Newsletters</h4>
             <p>Get Email updates about our latest shop and <span>special offers</span>
@@ -114,6 +138,46 @@
     <script src="JS/main.js"></script>
     <script src="JS/common.js"></script>
 
-    </body>
-</html>
 
+    <script>
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('q') || '';
+
+        fetch(`/searchproducts?q=${encodeURIComponent(query)}`)
+        .then(res => res.json())
+        .then(products => {
+            console.log(products);
+            const container = document.querySelector('.product-container');
+            container.innerHTML = '';
+
+            const filtered = products.filter(p => 
+                p.name.toLowerCase().includes(query.toLowerCase())
+            );
+
+            if (filtered.length === 0) {
+                container.innerHTML = "<p>No products found.</p>";
+                return;
+            }
+
+            filtered.forEach(product => {
+                const box = document.createElement('div');
+                box.classList.add('product');
+                box.innerHTML = `
+                    <img src="${product.image_url}" alt="" class="product-img">
+                    <div class="product-title">${product.name}</div>
+                    <div class="price">${product.price}</div>
+                    <i class="bx bx-shopping-bag add-cart" data-id="${product.id}"></i>
+                `;
+                container.appendChild(box);
+
+                box.addEventListener("click", () => {
+                    window.location.href = `sproduct.html?id=${product.id}`;
+                });
+            });
+        });
+
+    </script>
+
+</body>
+</html>

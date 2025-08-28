@@ -12,13 +12,12 @@ if(close) {
         nav.classList.remove('active');
     })
 }
-if(document.readyState == "loading") {
+/*if(document.readyState == "loading") {
     document.addEventListener("DOMContentLoaded", ready);
 }
 else {
     ready();
 }
+*/
 
-function ready() {
-    
-}
+

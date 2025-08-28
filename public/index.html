@@ -27,6 +27,13 @@
                             <li><button id="logoutBtn">Log out</button></li>
                         </ul></li>
         </ul>
+        <!-- Desktop search bar -->
+        <div id="search-container">
+            <form id="desktop-search-form" action="search.html" method="GET">
+                <input type="text" name="q" id="desktop-search-input" placeholder="Search for products..." required>
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+        </div>
         <div>
             <ul id="navbar">                
                 <li><a class="active" href="index.html">Home</a></li>
@@ -38,12 +45,24 @@
                 <a href="#" id="close"><i class="far fa-times close-btn"></i></a>   
             </ul>
         </div>
+        
         <div id="mobile">
             <!--<a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>-->
             <i id="bar" class="fas fa-outdent" style="cursor: pointer;"></i>
       
         </div>
     </section>
+    
+     <!-- Mobile search bar -->
+    <div id="mobile-search-container">
+        <form id="mobile-search-form" action="search.html" method="GET">
+            <input type="text" name="q" id="mobile-search-input" placeholder="Search for products..." required>
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+    </div>
+
+     
+
 
     <section id="hero">
         <h4>Trade-in-offer</h4>
@@ -51,6 +70,9 @@
         <h1>On All Products</h1>
         <button>Shop Now</button>
     </section>
+
+       
+
     
     <section id="product-section"  class="section-p1">
         <h2>Keep Shopping</h2>
@@ -133,6 +155,10 @@
 
 
 <script>
+
+
+
+
     document.addEventListener("DOMContentLoaded", () => {
         console.log("2");
         fetch("/products")

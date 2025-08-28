@@ -23,6 +23,13 @@
                             <li><button id="logoutBtn">Log out</button></li>
                         </ul></li>
         </ul>
+        <!-- Desktop search bar -->
+        <div id="search-container">
+            <form id="desktop-search-form" action="search.html" method="GET">
+                <input type="text" name="q" id="desktop-search-input" placeholder="Search for products..." required>
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+        </div>
         <div>
             <ul id="navbar">                
                 <li><a href="index.html">Home</a></li>
@@ -40,6 +47,14 @@
       
         </div>
     </section>
+
+    <!-- Mobile search bar -->
+    <div id="mobile-search-container">
+        <form id="mobile-search-form" action="search.html" method="GET">
+            <input type="text" name="q" id="mobile-search-input" placeholder="Search for products..." required>
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+    </div>
 
     <section id="page-header" class="contact-header section-m1 section-p1">
         <h2>#Let's_talk</h2>
