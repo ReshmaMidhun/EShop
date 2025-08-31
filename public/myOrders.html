@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - Eshop</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+/* Table for order summary */
+#orders-table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    font-size: 16px;
+    }
+
+#orders-table th, #orders-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+#orders-table th {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+
+#orders-table tr:nth-child(even) {
+    background-color: #fafafa;
+}
+#orders-table tr:hover {
+    background-color: #f1f1f1;
+ }
+.view-items-btn {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.view-items-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Container for order items */
+#order-items-container {
+    width: 90%;
+    margin: 20px auto;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+#order-items-container h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.order-item img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.order-item-details {
+    font-size: 14px;
+    color: #333;
+}
+/* Modal overlay */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000; /* On top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Scroll if needed */
+  background-color: rgba(0,0,0,0.5); /* Semi-transparent background */
+}
+
+/* Modal content box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Close button */
+.close-btn {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+@media (max-width: 767px) {
+    #orders-table {
+    
+    font-size: 10px;
+    }
+    .view-items-btn {
+    padding: 2px 7px;
+    font-size: 10px;
+}
+}
+
+
+</style>
+
+</head>
+<body>
+
+    <section id="header">
+        <a href="index.html"> <img src="img/logo_1.png" class="logo"></a>
+
+         <ul id="profile">
+                   <li id="loginBtn"><a href="login.html"><i class="fa-solid fa-user"></i></a></li>
+                   <li class="dropdown" id="user"><h5>Hello<span id="username"></span></h5>
+                        <ul class="dropdown-content">
+                            <li>Profile</li>
+                            <li><a href="myorders.html" id="myOrdersBtn">My Orders</a></li>
+                            <li><button id="logoutBtn">Log out</button></li>
+                        </ul></li>
+        </ul>
+        <!-- Desktop search bar -->
+        <div id="search-container">
+            <form id="desktop-search-form" action="search.html" method="GET">
+                <input type="text" name="q" id="desktop-search-input" placeholder="Search for products..." required>
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+        </div>
+        <div>
+            <ul id="navbar">                
+                <li><a class="active" href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                
+                <li><a href="cart.html"><i class="fa-solid fa-cart-shopping" id="cart-icon" data-quantity="0"></i></a></li>
+                <a href="#" id="close"><i class="far fa-times close-btn"></i></a>   
+            </ul>
+        </div>
+        
+        <div id="mobile">
+            <!--<a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>-->
+            <i id="bar" class="fas fa-outdent" style="cursor: pointer;"></i>
+      
+        </div>
+    </section>
+    
+     <!-- Mobile search bar -->
+    <div id="mobile-search-container">
+        <form id="mobile-search-form" action="search.html" method="GET">
+            <input type="text" name="q" id="mobile-search-input" placeholder="Search for products..." required>
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+    </div>
+
+     
+
+
+    <h1 style="text-align:center; margin-top: 20px;">My Orders</h1>
+        <table id="orders-table" border="1" cellpadding="8" cellspacing="0">
+    <thead>
+        <tr>
+        <th>Order ID</th>
+        <th>Date</th>
+        <th>Total</th>
+        <th>Status</th>
+        <th>Action</th>
+        <th>Order Details</th>
+        </tr>
+    </thead>
+    <tbody id="orders-body">
+        <tr><td colspan="5">Loading orders...</td></tr>
+    </tbody>
+    </table>
+
+    <!-- Modal container -->
+    <div id="orderModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h3>Order Items</h3>
+        <div id="modal-items-container"></div>
+    </div>
+    </div>
+
+
+     <section id="banner" class="section-m1">
+        <h4>Repair Services</h4>
+        <h2>Up to <span>70% Off</span> All t-shirts</h2>
+        <button class="normal">Shop More</button>
+    </section>
+
+    <section id="newsletter" class="section-p1 section-m1">
+        <div class="newstext">
+            <h4>Sign Up for Newsletters</h4>
+            <p>Get Email updates about our latest shop and <span>special offers</span>
+            </p>
+        </div>
+        <div class="form">
+            <input type="text" placeholder="Your Email address">
+            <button class="normal">Sign Up</button>
+        </div>
+
+    </section>
+
+   <footer class="section-p1">
+        <div class="col">
+            <img src="img/logo_1.png" class="logo" alt="">
+            <h4>Contact</h4>
+            <p><strong>Phone :</strong>04986325</p>
+            <p><strong>Hours:</strong>9:00 - 6:00, Mon - Fri</p>
+            <div class="follow">
+                <h4>Follow Us</h4>
+                <div class="icon" id="social-icons">
+                    <i class="fab fa-facebook-f"></i>
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-youtube"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <h4>About</h4>
+            <a href="about.html">About Us</a>
+            <a href="">Privacy Policy</a>
+            <a href="">Terms & Conditions</a>
+            <a href="contact.html">Contact Us</a>
+        </div>
+
+        <div class="col">
+            <h4>My Account</h4>
+            <a href="login.html">Sign In</a>
+            <a href="cart.html">View Cart</a>
+            <a href="">Help</a>
+            
+        </div>
+
+        <div class="copyright">
+            <p>@2025, reshmamidhun  </p>
+
+        </div>
+    </footer>
+
+    <script src="JS/main.js"></script>
+    <script src="JS/common.js"></script>
+
+    <script>
+
+    const modal = document.getElementById("orderModal");
+    const modalItemsContainer = document.getElementById("modal-items-container");
+    const closeBtn = document.querySelector("#orderModal .close-btn");
+
+    closeBtn.onclick = () => {
+        modal.style.display = "none";
+    };
+
+    // Close modal when clicking outside content
+    window.onclick = (e) => {
+        if(e.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+    const ordersBody = document.getElementById("orders-body");
+    const orderItemsContainer = document.getElementById("order-items-container");
+
+    fetch("/api/orders")
+    .then(res => res.json())
+    .then(data => {
+        ordersBody.innerHTML = "";
+
+    if(!data.success || data.orders.length === 0){
+      ordersBody.innerHTML = "<tr><td colspan='5'>No orders found.</td></tr>";
+      return;
+    }
+
+    data.orders.forEach(order => {
+      // Format date
+      const date = new Date(order.created_at);
+      const formattedDate = `${date.getDate().toString().padStart(2,'0')}/${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getFullYear()}`;
+
+      // Create order row
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${order.id}</td>
+        <td>${formattedDate}</td>
+        <td>$${order.total}</td>
+        <td>${order.payment_status}</td>
+        <td><button class="view-items-btn">View Items</button></td>
+        <td>${order.order_status}</td>
+      `;
+        //console.log(order.id);
+      // Handle button click
+      row.querySelector(".view-items-btn").addEventListener("click", () => {
+        
+        fetch(`/order_items/${order.id}`)
+        .then(res => res.json())
+        .then(result => {
+            
+            
+        
+        console.log(result);
+        let itemsHTML = "";
+        
+        result.forEach(item => {
+          itemsHTML += `
+            <div class="order-item">
+              <img src="${item.image_url}" alt="${item.product_name}">
+              <div class="order-item-details">
+                <strong>${item.product_name}</strong> <br>
+                Size: ${item.size}<br>
+                Quantity: ${item.quantity}<br>
+                 Price: $${item.price}
+              </div>
+            </div>
+          `;
+
+        
+       });
+
+        modalItemsContainer.innerHTML = itemsHTML;
+        modal.style.display = "block"; // Show modal
+        });
+      });
+
+      ordersBody.appendChild(row);
+    });
+  })
+  .catch(err => {
+    console.error(err);
+    ordersBody.innerHTML = "<tr><td colspan='5'>Error fetching orders.</td></tr>";
+  });
+</script>
+
+</body>
+</html>

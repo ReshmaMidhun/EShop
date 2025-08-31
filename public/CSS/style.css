@@ -187,7 +187,11 @@ button.normal {
   padding: 10px 12px;
   cursor: pointer;
 }
-
+.dropdown-content li a {
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+}
 
 .dropdown-content li:hover, 
 #profile li button:hover {

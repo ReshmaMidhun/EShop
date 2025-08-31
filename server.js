@@ -514,7 +514,7 @@ app.get("/cartView", (req, res) => {
             res.status(500).res.json( { error : "Database Error" });
         }
         res.json(result);
-      //  console.log(result);
+      // console.log(result);
     })
 })
 
@@ -569,8 +569,8 @@ app.post("/stripe-checkout", async(req, res) => {
         
         const unitAmount = Math.round(parseFloat(item.price) * 100);
         
-       // console.log("item-price:", item.price);
-        //console.log("unitAmount:", unitAmount);
+       //console.log("item-price:", item.price);
+       //console.log("unitAmount:", unitAmount);
         return {
             price_data : {
                 currency : 'usd',
@@ -612,18 +612,27 @@ app.post("/stripe-checkout", async(req, res) => {
             const userId = session.metadata.user_id;
             const totalAmount = session.amount_total / 100;
             console.log("paid");
+
+            // Stripe billing details
+            const customerName = session.customer_details.name; // User's name
+            const customerEmail = session.customer_details.email;
+            const customerAddress = session.customer_details.address; 
+            // address object contains: line1, line2, city, postal_code, country
+
             // Fetch cart items that are still in stock
-const [cartItems] = await dbPromise.query(`SELECT c.product_id,c.size,c.quantity, p.price FROM cart c JOIN products p ON c.product_id = p.id JOIN product_sizes ps ON ps.product_id = c.product_id AND ps.size = c.size WHERE c.user_id = ? AND ps.stock > 0`, [userId]);
+            const [cartItems] = await dbPromise.query(`SELECT c.product_id,c.size,c.quantity, p.price,p.name AS product_name,p.image_url FROM cart c JOIN products p ON c.product_id = p.id JOIN product_sizes ps ON ps.product_id = c.product_id AND ps.size = c.size WHERE c.user_id = ? AND ps.stock > 0`, [userId]);
             console.log(cartItems);
             
             if (cartItems.length > 0) {
                 // Insert order
-                const [orderResult] = await dbPromise.query('INSERT INTO orders (user_id, total, payment_status) VALUES (?, ?, ?)',[userId, totalAmount, 'paid']);
+                const [orderResult] = await dbPromise.query('INSERT INTO orders (user_id, total, payment_status, customer_name, customer_address, order_status) VALUES (?, ?, ? ,? ,?, ?)',[userId, totalAmount, 'paid', customerName, JSON.stringify(customerAddress), 'Order Placed']);
                 const orderId = orderResult.insertId;
 
+                
                 // Insert order items
                 for (const item of cartItems) {
-                    await dbPromise.query('INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)', [orderId, item.product_id, item.quantity, item.price] );
+                     console.log(item.price);
+                    await dbPromise.query('INSERT INTO order_items (order_id, product_id, quantity, price, product_name, image_url, size) VALUES (?, ?, ?, ?, ?, ? ,?)', [orderId, item.product_id, item.quantity, item.price, item.product_name, item.image_url, item.size] );
                 }
 
                 // Remove only the in-stock purchased items from cart
@@ -685,8 +694,97 @@ app.get("/getProducts", (req, res) => {
     })
 
 })
-const PORT = 80; 
-app.listen(PORT, '0.0.0.0', () => {
+
+app.get("/api/orders", (req, res) => {
+    // Check if user is logged in
+    
+    if (!req.session.user) {
+        return res.status(401).json({ success: false, message: "Not logged in" });
+    }
+    
+    const user_id = req.session.user.id;
+    const sql = `SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC`;
+    console.log("user id "+ user_id);
+    console.log("sql "+ sql);
+    db.query(sql, [user_id], (err, result) => {
+        if(err) {
+            return res.status(500).json({ success: false, message: "Server error" });
+        }
+        
+        res.json({ success: true, orders:result })
+        //console.log("result "+ JSON.stringify(result, null, 2));
+    
+
+    });
+
+});
+app.get("/order_items/:id", (req, res) => {
+    const order_id = req.params.id;
+    // Check if user is logged in
+    if (!req.session.user) {
+        return res.status(401).json({ success: false, message: "Not logged in" });
+    }
+    
+    const user_id = req.session.user.id;
+    const sql = `SELECT * FROM order_items WHERE order_id = ?`;
+    console.log("product id "+ order_id);
+    console.log("sql "+ sql);
+    db.query(sql, [order_id], (err, result) => {
+        if(err) {
+            return res.status(500).json({ success: false, message: "Server error" });
+        }
+        
+        res.json(result);
+        console.log("result "+ JSON.stringify(result, null, 2));
+    });
+
+});
+
+app.get("/admin_order_items/:id", (req, res) => {
+    const order_id = req.params.id;
+    
+    const sql = `SELECT * FROM order_items WHERE order_id = ?`;
+    console.log("product id "+ order_id);
+    console.log("sql "+ sql);
+    db.query(sql, [order_id], (err, result) => {
+        if(err) {
+            return res.status(500).json({ success: false, message: "Server error" });
+        }
+        
+        res.json(result);
+        console.log("result "+ JSON.stringify(result, null, 2));
+    });
+
+});
+
+app.get("/admin/orders", (req, res) => {
+    
+    const sql = `SELECT * FROM orders ORDER BY created_at DESC`;
+
+  db.query(sql, (err, result) => {
+    if(err) return res.status(500).json({ success: false, message: "Server error" });
+    res.json({ success: true, orders: result });
+  });
+
+})
+
+app.post("/admin/update-order-status/:id", (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+    const sql = "UPDATE orders SET order_status = ? WHERE id = ?";
+    console.log(id);
+    console.log(status);
+    console.log(sql);
+    db.query(sql, [status, id], (err, result) => {
+        if(err) {
+            console.error(err);
+            return res.status(500).json({ success : false, message : "Server Error" });
+        }
+        res.json({ success: true, message: "Status Updated" });
+    });
+});
+const PORT = process.env.PORT || 3006; 
+app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 

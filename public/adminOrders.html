@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eshop</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <!--Box Icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    
+    <!--Box Icons-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="CSS/admin-style.css">
+    <style>
+        #admin-orders-table {
+            width: 90%;
+            margin: 20px auto;
+            min-width: 400px; 
+            border-collapse: collapse;
+            font-size: 16px;
+        }
+
+        #admin-orders-table th,
+        #admin-orders-table td {
+                border: 1px solid #ccc;
+                padding: 10px;
+                text-align: center;
+                color: #000;
+        }
+
+        #admin-orders-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            }
+
+            #admin-orders-table tr:nth-child(even) {
+            background-color: #fafafa;
+            }
+
+            #admin-orders-table tr:hover {
+            background-color: #f1f1f1;
+            }
+
+            .status-dropdown {
+            padding: 4px;
+            font-size: 14px;
+            }
+
+             #toast-container {
+                position: fixed;
+                top: 60px;
+                right: 20px;
+                z-index: 9999;
+            }
+
+    .toast {
+        background: #4CAF50; /* success = green */
+        color: white;
+        padding: 6px 12px;
+        margin-bottom: 8px;
+        margin-right: 20px;
+        border-radius: 4px;
+        font-size: 14px;         
+        min-width: 120px;        
+        max-width: 250px; 
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        opacity: 0;
+        transform: translateX(120%);
+        transition: all 0.5s ease;
+    }
+
+    .toast.show {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+   
+
+.order-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.order-item img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.order-item-details {
+    font-size: 14px;
+    color: #333;
+}
+    /* Modal overlay */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000; /* On top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Scroll if needed */
+  background-color: rgba(0,0,0,0.5); /* Semi-transparent background */
+}
+
+/* Modal content box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Close button */
+.close-btn {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+@media (max-width: 767px) {
+    #admin-orders-table {
+    
+    font-size: 8px;
+    }
+    #admin-orders-table th,
+  #admin-orders-table td {
+    padding: 6px;
+  }
+    .view-items-btn {
+    padding: 2px 4px;
+    font-size: 10px;
+}
+.status-dropdown {
+            padding: 2px;
+            font-size: 10px;
+            }
+}
+
+    </style>
+</head>
+<body>
+
+    <section id="admin-section">
+        <div class="div1">
+            <h2>ADMIN PANEL</h2>
+            <ul id="lists">
+                <li><a href="addProduct.html"><i class="fa-solid fa-circle-plus"></i>Add Product</a></i></li>
+                <li><a href="listProduct.html"><i class="fa-solid fa-bag-shopping"></i>List Products</a></i></li>
+                <li><a href="notifications.html"><i class="fa-solid fa-receipt"></i> Notifications <span id="msgCount">(0)</span></a></li>
+                <li><a href="adminOrders.html"><i class="fa-solid fa-bag-shopping"></i> Orders</a></li>
+
+            </ul>
+        </div>
+        <div class="div2"> 
+            <div class="top-bar">
+                <button id="logOut-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>Logout
+                </button>
+            </div>
+            <div>
+                <h1 style="text-align:center; margin-top: 20px; color:#000;">My Orders</h1>
+                <table id="admin-orders-table"  border="1" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>User</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-orders-body">
+                        <!-- JS will fill rows -->
+                    </tbody>
+                </table>
+
+            <!-- Modal container -->
+            <div id="orderModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn">&times;</span>
+                    <h3>Order Status</h3>
+                    <div id="modal-items-container"></div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        
+
+    </section>
+
+    <div id="toast-container"></div>
+
+    <script src="JS/adminMain.js"></script>
+    <script>
+
+    const modal = document.getElementById("orderModal");
+    const modalItemsContainer = document.getElementById("modal-items-container");
+    const closeBtn = document.querySelector("#orderModal .close-btn");
+
+    closeBtn.onclick = () => {
+        modal.style.display = "none";
+    };
+
+    // Close modal when clicking outside content
+    window.onclick = (e) => {
+        if(e.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+
+    updateNotificationCount();
+    document.getElementById("logOut-btn").addEventListener("click", () => {
+        window.location.href = "login.html";
+    })
+    document.addEventListener("DOMContentLoaded", () => {
+  fetch(`/admin/orders`)
+    .then(res => res.json())
+    .then(data => {
+      const tbody = document.getElementById("admin-orders-body");
+      tbody.innerHTML = "";
+      if(!data.success || data.orders.length === 0){
+        tbody.innerHTML = "<tr><td colspan='6'>No orders found</td></tr>";
+        return;
+      }
+
+      data.orders.forEach(order => {
+        const tr = document.createElement("tr");
+        const addressObj = JSON.parse(order.customer_address || '{}'); 
+const simplifiedAddress = `${order.customer_name}, ${[
+  addressObj.line1,
+  addressObj.line2,
+  addressObj.city,
+  addressObj.state,
+  addressObj.country
+].filter(Boolean).join(', ')}`;
+        // Simplify the customer address from order
+    
+        tr.innerHTML = `
+          <td>${order.id}</td>
+          
+          <td>${simplifiedAddress} </td>
+          <td>${new Date(order.created_at).toLocaleDateString()}</td>
+          <td>$${order.total}</td>
+          <td>
+            <select class="status-dropdown" data-id="${order.id}">
+              <option value="Order Placed" ${order.order_status==='Order Placed'?'selected':''}>Order Placed</option>
+              <option value="Packing" ${order.order_status==='Packing'?'selected':''}>Packing</option>
+              <option value="Shipped" ${order.order_status==='shipped'?'selected':''}>Shipped</option>
+              <option value="Out For Delivery" ${order.order_status==='Out For Delivery'?'selected':''}>Out For Delivery</option>
+              <option value="Delivered" ${order.order_status==='delivered'?'selected':''}>Delivered</option>
+            </select>
+          </td>
+          <td><button class="view-items-btn" data-id="${order.id}">View Items</button></td>
+        `;
+
+         // Handle button click
+      tr.querySelector(".view-items-btn").addEventListener("click", () => {
+        
+        fetch(`/admin_order_items/${order.id}`)
+        .then(res => res.json())
+        .then(result => {
+            
+            
+        
+        console.log(result);
+        let itemsHTML = "";
+        
+        result.forEach(item => {
+          itemsHTML += `
+            <div class="order-item">
+              <img src="${item.image_url}" alt="${item.product_name}">
+              <div class="order-item-details">
+                <strong>${item.product_name}</strong> <br>
+                Size: ${item.size}<br>
+                Quantity: ${item.quantity}<br>
+                 Price: $${item.price}
+              </div>
+            </div>
+          `;
+
+        
+       });
+
+        modalItemsContainer.innerHTML = itemsHTML;
+        modal.style.display = "block"; // Show modal
+        });
+      });
+
+
+        tbody.appendChild(tr);
+      });
+
+      document.addEventListener("change", function(e) {
+            if(e.target.classList.contains("status-dropdown")) {
+                const orderId = e.target.getAttribute("data-id");
+                const newStatus = e.target.value;
+
+                fetch(`/admin/update-order-status/${orderId}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ status: newStatus })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.success) {
+                        showToast(data.message);
+                    } else {
+                        alert("Failed to update order status");
+                    }
+                });
+            }
+        });
+    });
+});
+
+ function showToast(message, type = "success") {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+
+            toast.classList.add("toast", "show");
+            toast.textContent = message;
+
+            // Different colors based on type
+            if (type === "error") toast.style.background = "#f44336"; // red
+            if (type === "info") toast.style.background = "#2196F3"; // blue
+            if (type === "warning") toast.style.background = "#ff9800"; // orange
+
+            container.appendChild(toast);
+
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove("show");
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+
+
+    
+</script>
+</body>
+</html>

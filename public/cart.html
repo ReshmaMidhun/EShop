@@ -53,6 +53,7 @@
                    <li class="dropdown" id="user"><h5>Hello<span id="username"></span></h5>
                         <ul class="dropdown-content">
                             <li>Profile</li>
+                            <li><a href="myorders.html" id="myOrdersBtn">My Orders</a></li>
                             <li><button id="logoutBtn">Log out</button></li>
                         </ul></li>
         </ul>
@@ -354,14 +355,14 @@ payBtn.addEventListener("click", () => {
            console.log(availableItems);
 
             if (availableItems.length === 0) {
-                alert("No Items available in stock for payment");
+                showToast("This Item is not available now.", "error");
                 return;
             }
             console.log(JSON.stringify({ items: availableItems }));
             return fetch("/stripe-checkout", {
                 method: "POST",
                 headers:  new Headers({ "Content-Type": "application/json"}),
-                body: JSON.stringify({ items: availableItems }) // lowercase 'items'
+                body: JSON.stringify({ items: availableItems }) 
             })
             .then(res => {
             if (!res.ok) {
