@@ -783,10 +783,11 @@ app.post("/admin/update-order-status/:id", (req, res) => {
         res.json({ success: true, message: "Status Updated" });
     });
 });
-const PORT = process.env.PORT || 3006; 
+const PORT = process.env.PORT || 80; 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
 
 
 
