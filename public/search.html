@@ -21,7 +21,7 @@
 
          <ul id="profile">
                    <li id="loginBtn"><a href="login.html"><i class="fa-solid fa-user"></i></a></li>
-                   <li class="dropdown" id="user"><h5>Hello<span id="username"></span></h5>
+                   <li class="dropdown" id="user"><h5>Hello<span id="username"></span> <i class="fa-solid fa-caret-down"></i></h5>
                         <ul class="dropdown-content">
                             <li>Profile</li>
                             <li><a href="myOrders.html" id="myOrdersBtn">My Orders</a></li>
@@ -63,7 +63,7 @@
     </div>
 
      <section id="product-section"  class="section-p1">
-        <h2>Keep Shopping</h2>
+        <h2 id="search-head" style="text-align: center;"></h2>
         <p>Summer Collection New Modern Design</p>
         <div class="product-container">
             
@@ -144,12 +144,17 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const query = urlParams.get('q') || '';
-
+        const container = document.querySelector('.product-container');
         fetch(`/searchproducts?q=${encodeURIComponent(query)}`)
         .then(res => res.json())
         .then(products => {
+
+            if(products.length === 0){
+                console.log("No Products Found");
+                document.getElementById("search-head").innerHTML = "No Products Found";
+            }
             console.log(products);
-            const container = document.querySelector('.product-container');
+            
             container.innerHTML = '';
 
             const filtered = products.filter(p => 
@@ -162,6 +167,7 @@
             }
 
             filtered.forEach(product => {
+                document.getElementById("search-head").innerHTML = "Result";
                 const box = document.createElement('div');
                 box.classList.add('product');
                 box.innerHTML = `

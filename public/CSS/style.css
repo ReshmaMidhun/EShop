@@ -88,7 +88,17 @@ button.normal {
 #profile {
     list-style: none;
     display: flex;
+    border: 1px solid #088178;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
+#profile:hover {
+    
+    border-color: #000;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* soft shadow */
+}
+
 #profile li {
     padding: 0 5px;
     }
@@ -98,11 +108,11 @@ button.normal {
     background-color: #fff;
 }
 #profile h5 {
-    cursor: pointer;
-    font-size: 16px;
+    
+    font-size: 14px;
 }
 #profile span {
-    font-size: 18px;
+    font-size: 16px;
     margin-left: 5px;
 }
 
@@ -173,7 +183,9 @@ button.normal {
   display: none;
   position: absolute;
   
-  
+   width: 180px;
+    height: 100px;
+    background-color: #fff;
   background: white;
   min-width: 120px;
   border: 1px solid #ccc;
@@ -295,8 +307,8 @@ button.normal {
 #product-section .product-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
-    justify-content: start;
-    gap: 20px;
+    justify-content: center;
+    gap: 30px;
     padding: 20px;
 }
 
@@ -605,7 +617,7 @@ footer .copyright {
     flex-wrap: wrap;
     background-color: #f4f4f4;
     border-radius: 5px;
-    margin: 20px;
+    margin: 0 20px 20px 0;
 
 }
 
@@ -783,7 +795,7 @@ footer .copyright {
 
 #cart-section {
     padding: 20px 80px;
-    margin: 20px;
+    margin:  0 0 20px 0;
     background-color: #f4f4f4;
 }
 
