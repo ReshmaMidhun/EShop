@@ -22,7 +22,7 @@ A simple e-commerce web application where users can browse products, view detail
 ## 📦 Installation and Set up
 ```bash
 1. Clone the repository:
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/ReshmaMidhun/EShop.git
 cd your-repo-name
 
 2.Install backend dependencies:
