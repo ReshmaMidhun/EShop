@@ -37,6 +37,7 @@ Update db.js with your DB credentials.
 DB_HOST=localhost
 DB_USER=root
 DB_PASS=yourpassword
+DB_DATABASE =yourdatabase
 
 # Stripe Payment
 STRIPE_SECRET_KEY=sk_test_XXXXXXXXXXXXXXXX
