@@ -55,6 +55,8 @@ node server.js
 6.Open index.html in your browser to view the site.
 
 7.📸 Screenshots
+![Test Image](assets/screenshot1.png)
+
 ![Homepage](assets/screenshot1.png)
 ![Products Page](assets/screenshot2.png) 
 ![Single Product Details Page](assets/screenshot3.png)
