@@ -1,6 +1,6 @@
 # 🛒 E-Commerce Website  
 
-A scalable backend API for an e-commerce platform built with **Node.js**, **Express.js**, and **MySQL**, featuring secure **Stripe payment integration** and deployed on **AWS EC2 with Nginx**.
+A scalable backend API for an e-commerce platform built with **Node.js**, **Express.js**, and **MySQL**, featuring secure **Stripe payment integration** and deployed on **AWS EC2 with Nginx**
 
 ## 📌 Features  
 - RESTful API for products, categories, users, and orders
